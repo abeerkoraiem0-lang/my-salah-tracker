@@ -1,5 +1,5 @@
 
-const CACHE = "salah-pwa-v2";
+const CACHE = "salah-pwa-v3";
 
 const ASSETS = [
   "./",
