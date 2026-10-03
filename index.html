@@ -4,285 +4,149 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f4f5ef">
-<meta name="description" content="متابعة الصلاة بطريقة بسيطة وهادئة">
+<meta name="theme-color" content="#f5f6f1">
+<meta name="description" content="متابعة الصلاة بطريقة بسيطة">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>متابعة الصلاة</title>
 <style>
-:root{--bg:#f4f5ef;--surface:#fff;--ink:#35483f;--muted:#87948b;--line:#e7ebe3;--green:#789b87;--green-soft:#e5eee7;--blue-soft:#e8eef2;--peach-soft:#f5e9df;--lavender-soft:#eeeaf5;--gold-soft:#f4efdc;--shadow:0 5px 20px rgba(53,72,63,.055)}
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Arabic",sans-serif}
+html,body{margin:0;padding:0;background:#f5f6f1;color:#405348;font-family:Arial,"Noto Sans Arabic",sans-serif}
 body{min-height:100vh}
-.app{max-width:720px;margin:auto;padding:22px 14px 34px}
-header{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:20px}
-.brand-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:14px;background:var(--green-soft);font-size:21px}
-h1{font-size:22px;margin:0;color:var(--ink);font-weight:700}
-.subtitle{text-align:center;color:var(--muted);font-size:12px;margin:-12px 0 20px}
-.section-title{font-size:15px;font-weight:700;margin:22px 2px 10px;color:var(--ink)}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:17px;padding:15px;box-shadow:var(--shadow);min-width:0}
-.stat-card.total{background:var(--green-soft);border-color:#d9e6dc}
-.stat-label{font-size:12px;color:var(--muted);margin-bottom:10px}
-.stat-number{font-size:25px;line-height:1.25;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-.stat-caption{font-size:11px;color:var(--muted);margin-top:5px}
-.prayer-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
-.prayer-stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;text-align:center;padding:11px 3px}
-.prayer-stat .emoji{font-size:19px;margin-bottom:7px}
-.prayer-stat .name{font-size:10px;color:var(--muted);margin-bottom:5px}
-.prayer-stat .count{font-size:16px;font-weight:700;color:var(--ink)}
-.month{display:flex;align-items:center;justify-content:center;gap:15px;margin:0 0 14px}
-.month button{border:0;background:var(--surface);color:var(--green);width:36px;height:36px;border-radius:13px;font-size:25px;line-height:1;cursor:pointer;box-shadow:0 2px 8px rgba(53,72,63,.05)}
-.month button:active{background:var(--green-soft)}
-.month-name{font-size:17px;font-weight:700;color:var(--ink);min-width:155px;text-align:center}
-.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
-table{border-collapse:collapse;width:100%;min-width:510px;table-layout:fixed}
-th,td{border-bottom:1px solid var(--line);text-align:center;height:48px}
-th{font-size:12px;font-weight:600;color:var(--muted);background:#fafbf8;height:54px}
-th:first-child,td:first-child{width:48px}
+.app{max-width:680px;margin:auto;padding:22px 14px 30px}
+header{display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+h1{font-size:22px;margin:0;color:#405348;font-weight:500}
+.month{display:flex;align-items:center;justify-content:center;gap:18px;margin:0 0 18px}
+.month button{border:0;background:transparent;color:#789783;width:34px;height:34px;border-radius:50%;font-size:25px;line-height:1;cursor:pointer}
+.month button:active{background:#e5ede5}
+.month-name{font-size:18px;font-weight:500;color:#52685a;min-width:155px;text-align:center}
+.table-wrap{overflow-x:auto;background:#fff;border:1px solid #dfe7df;border-radius:4px;box-shadow:0 1px 2px rgba(45,70,53,.04)}
+table{border-collapse:collapse;width:100%;min-width:520px;table-layout:fixed}
+th,td{border-bottom:1px solid #e9eee8;text-align:center;height:49px}
+th{font-size:12px;font-weight:500;color:#829287;background:#f8faf6;height:42px}
+td:first-child,th:first-child{width:58px}
 tr:last-child td{border-bottom:0}
-.day{font-size:13px;color:var(--muted);font-weight:500}
-.prayer-head{display:flex;flex-direction:column;align-items:center;gap:3px}
-.prayer-head span:first-child{font-size:16px}
-.prayer-head span:last-child{font-size:11px}
-.check{width:27px;height:27px;border:1.5px solid #d7dfd7;border-radius:9px;background:#fff;margin:auto;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;color:#fff;padding:0;cursor:pointer;transition:background .15s,border-color .15s}
-.check.done{background:var(--green);border-color:var(--green);color:#fff}
-.today td{background:#f8faf5}
-.today .day{font-weight:700;color:var(--green)}
-.hint{text-align:center;color:var(--muted);font-size:11px;margin-top:12px}
-.footer{display:flex;justify-content:center;margin-top:9px}
-.clear{border:0;background:transparent;color:#9a8274;font-size:11px;padding:8px 10px;cursor:pointer}
-#install{display:none;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);border:1px solid #d6e2d8;background:var(--surface);color:var(--ink);border-radius:12px;padding:11px 17px;box-shadow:var(--shadow);font:inherit;z-index:5}
-@media(max-width:420px){
-.app{padding:18px 9px 28px}
-h1{font-size:21px}
-.month-name{font-size:16px}
-.stat-card{padding:13px}
-.stat-number{font-size:23px}
-.prayer-stats{gap:5px}
-.prayer-stat{padding:10px 2px}
-.prayer-stat .name{font-size:9px}
-.prayer-stat .count{font-size:15px}
-}
+.day{font-size:14px;color:#78897e;font-weight:400}
+.check{width:26px;height:26px;border:1px solid #cbd8cc;border-radius:3px;background:#fff;margin:auto;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;color:#fff;padding:0;cursor:pointer}
+.check.done{background:#789783;border-color:#789783;color:#fff}
+.today td{background:#f4f8f2}
+.today .day{font-weight:700;color:#456b52}
+.hint{text-align:center;color:#91a095;font-size:11px;margin-top:13px}
+.footer{display:flex;justify-content:center;margin-top:10px}
+.clear{border:0;background:transparent;color:#9b887c;font-size:11px;padding:7px 10px;cursor:pointer}
+#install{display:none;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);border:1px solid #d5e0d5;background:#fff;color:#52685a;border-radius:7px;padding:10px 16px;box-shadow:0 2px 10px rgba(45,70,53,.08);font:inherit}
+@media(max-width:420px){.app{padding:19px 8px 25px}h1{font-size:21px}.month-name{font-size:17px}}
 </style>
 </head>
 <body>
 <div class="app">
-<header><div class="brand-icon" aria-hidden="true">🕌</div><h1>متابعة الصلاة</h1></header>
-<div class="subtitle">خطوة صغيرة كل يوم 🤍</div>
-
-<div class="section-title">ملخص الشهر</div>
-<div class="summary-grid">
- <div class="stat-card total">
-  <div class="stat-label">🌿 الصلوات المسجّلة</div>
-  <div class="stat-number" id="monthDone">0</div>
-  <div class="stat-caption" id="monthPossible">من 0 صلاة</div>
- </div>
- <div class="stat-card">
-  <div class="stat-label">✨ نسبة الإنجاز</div>
-  <div class="stat-number" id="monthPercent">0٪</div>
-  <div class="stat-caption">خلال الشهر المحدد</div>
- </div>
-</div>
-
-<div class="section-title">إجمالي كل الشهور</div>
-<div class="stat-card">
- <div class="stat-label">🌸 مجموع الصلوات المسجّلة منذ بداية الاستخدام</div>
- <div class="stat-number" id="allDone">0</div>
- <div class="stat-caption">كل العلامات المحفوظة على هذا الجهاز</div>
-</div>
-
-<div class="section-title">تفاصيل كل صلاة هذا الشهر</div>
-<div class="prayer-stats" id="prayerStats"></div>
-
-<div class="section-title">سجل الصلوات</div>
+<header><h1>متابعة الصلاة</h1></header>
 <div class="month">
- <button id="prev" aria-label="الشهر السابق">‹</button>
- <div class="month-name" id="monthName"></div>
- <button id="next" aria-label="الشهر التالي">›</button>
+<button id="prev" aria-label="الشهر السابق">‹</button>
+<div class="month-name" id="monthName"></div>
+<button id="next" aria-label="الشهر التالي">›</button>
 </div>
-
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
 <th>اليوم</th>
-<th><div class="prayer-head"><span>🌅</span><span>الفجر</span></div></th>
-<th><div class="prayer-head"><span>☀️</span><span>الظهر</span></div></th>
-<th><div class="prayer-head"><span>🌤️</span><span>العصر</span></div></th>
-<th><div class="prayer-head"><span>🌇</span><span>المغرب</span></div></th>
-<th><div class="prayer-head"><span>🌙</span><span>العشاء</span></div></th>
+<th>الفجر</th>
+<th>الظهر</th>
+<th>العصر</th>
+<th>المغرب</th>
+<th>العشاء</th>
 </tr>
 </thead>
 <tbody id="rows"></tbody>
 </table>
 </div>
-
 <div class="hint">اضغطي على المربع لتسجيل الصلاة</div>
 <div class="footer"><button class="clear" id="clearMonth">مسح علامات هذا الشهر</button></div>
 </div>
-
 <button id="install">تثبيت التطبيق</button>
-
 <script>
-const keyPrefix="simple_salah_";
-const prayers=["fajr","dhuhr","asr","maghrib","isha"];
-const prayerNames=["الفجر","الظهر","العصر","المغرب","العشاء"];
-const prayerIcons=["🌅","☀️","🌤️","🌇","🌙"];
+const keyPrefix="simple_salah_", prayers=["fajr","dhuhr","asr","maghrib","isha"];
 const arMonths=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-
-let view=new Date();
-view.setDate(1);
+let view=new Date();view.setDate(1);
 
 function key(y,m,d,p){
- return `${keyPrefix}${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}_${p}`;
+return `${keyPrefix}${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}_${p}`
 }
 
 function done(y,m,d,p){
- return localStorage.getItem(key(y,m,d,p))==="1";
-}
-
-function monthCounts(y,m){
- const days=new Date(y,m+1,0).getDate();
- const counts=prayers.map(()=>0);
- let total=0;
- for(let d=1;d<=days;d++){
-  prayers.forEach((p,i)=>{
-   if(done(y,m,d,p)){
-    total++;
-    counts[i]++;
-   }
-  });
- }
- return {days,total,counts};
-}
-
-function allTimeTotal(){
- let total=0;
- for(let i=0;i<localStorage.length;i++){
-  const k=localStorage.key(i);
-  if(k&&k.startsWith(keyPrefix)&&localStorage.getItem(k)==="1"){
-   total++;
-  }
- }
- return total;
-}
-
-function renderSummary(){
- const y=view.getFullYear(),m=view.getMonth();
- const s=monthCounts(y,m);
- const possible=s.days*5;
-
- document.getElementById("monthDone").textContent=s.total;
- document.getElementById("monthPossible").textContent=`من ${possible} صلاة`;
- document.getElementById("monthPercent").textContent=`${Math.round(s.total/possible*100)}٪`;
- document.getElementById("allDone").textContent=allTimeTotal();
-
- document.getElementById("prayerStats").innerHTML=
-  prayers.map((p,i)=>`
-   <div class="prayer-stat">
-    <div class="emoji">${prayerIcons[i]}</div>
-    <div class="name">${prayerNames[i]}</div>
-    <div class="count">${s.counts[i]}</div>
-   </div>
-  `).join("");
+return localStorage.getItem(key(y,m,d,p))==="1"
 }
 
 function render(){
- const y=view.getFullYear(),m=view.getMonth();
- document.getElementById("monthName").textContent=`${arMonths[m]} ${y}`;
+const y=view.getFullYear(),m=view.getMonth();
+document.getElementById("monthName").textContent=`${arMonths[m]} ${y}`;
+const days=new Date(y,m+1,0).getDate(),today=new Date(),rows=document.getElementById("rows");
+rows.innerHTML="";
 
- const days=new Date(y,m+1,0).getDate();
- const today=new Date();
- const rows=document.getElementById("rows");
- rows.innerHTML="";
+for(let d=1;d<=days;d++){
+const tr=document.createElement("tr");
+if(today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d)tr.className="today";
 
- for(let d=1;d<=days;d++){
-  const tr=document.createElement("tr");
+const dc=document.createElement("td");
+dc.className="day";
+dc.textContent=d;
+tr.appendChild(dc);
 
-  if(today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d){
-   tr.className="today";
-  }
-
-  const dc=document.createElement("td");
-  dc.className="day";
-  dc.textContent=d;
-  tr.appendChild(dc);
-
-  prayers.forEach(p=>{
-   const td=document.createElement("td");
-   const b=document.createElement("button");
-   let v=done(y,m,d,p);
-
-   b.className="check"+(v?" done":"");
-   b.textContent=v?"✓":"";
-   b.setAttribute("aria-label",`${d} ${arMonths[m]} - ${prayerNames[prayers.indexOf(p)]}`);
-   b.setAttribute("aria-pressed",String(v));
-
-   b.onclick=()=>{
-    v=!done(y,m,d,p);
-    localStorage.setItem(key(y,m,d,p),v?"1":"0");
-    b.className="check"+(v?" done":"");
-    b.textContent=v?"✓":"";
-    b.setAttribute("aria-pressed",String(v));
-    renderSummary();
-   };
-
-   td.appendChild(b);
-   tr.appendChild(td);
-  });
-
-  rows.appendChild(tr);
- }
-
- renderSummary();
+prayers.forEach(p=>{
+const td=document.createElement("td"),b=document.createElement("button");
+let v=done(y,m,d,p);
+b.className="check"+(v?" done":"");
+b.textContent=v?"✓":"";
+b.onclick=()=>{
+v=!done(y,m,d,p);
+localStorage.setItem(key(y,m,d,p),v?"1":"0");
+b.className="check"+(v?" done":"");
+b.textContent=v?"✓":"";
+};
+td.appendChild(b);
+tr.appendChild(td);
+});
+rows.appendChild(tr);
+}
 }
 
 document.getElementById("prev").onclick=()=>{
- view.setMonth(view.getMonth()-1);
- render();
+view.setMonth(view.getMonth()-1);
+render();
 };
 
 document.getElementById("next").onclick=()=>{
- view.setMonth(view.getMonth()+1);
- render();
+view.setMonth(view.getMonth()+1);
+render();
 };
 
 document.getElementById("clearMonth").onclick=()=>{
- const y=view.getFullYear(),m=view.getMonth();
- const days=new Date(y,m+1,0).getDate();
-
- if(confirm("مسح كل علامات الصلاة لهذا الشهر؟")){
-  for(let d=1;d<=days;d++){
-   prayers.forEach(p=>localStorage.removeItem(key(y,m,d,p)));
-  }
-  render();
- }
+const y=view.getFullYear(),m=view.getMonth(),days=new Date(y,m+1,0).getDate();
+if(confirm("مسح كل علامات الصلاة لهذا الشهر؟")){
+for(let d=1;d<=days;d++)prayers.forEach(p=>localStorage.removeItem(key(y,m,d,p)));
+render();
+}
 };
 
 render();
 
 let deferredPrompt;
-
 window.addEventListener("beforeinstallprompt",e=>{
- e.preventDefault();
- deferredPrompt=e;
- document.getElementById("install").style.display="block";
+e.preventDefault();
+deferredPrompt=e;
+document.getElementById("install").style.display="block";
 });
 
 document.getElementById("install").onclick=async()=>{
- if(!deferredPrompt)return;
- deferredPrompt.prompt();
- await deferredPrompt.userChoice;
- deferredPrompt=null;
- document.getElementById("install").style.display="none";
+if(!deferredPrompt)return;
+deferredPrompt.prompt();
+await deferredPrompt.userChoice;
+deferredPrompt=null;
+document.getElementById("install").style.display="none";
 };
 
-if("serviceWorker"in navigator){
- window.addEventListener("load",()=>{
-  navigator.serviceWorker.register("sw.js");
- });
-}
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js"));
 </script>
 </body>
 </html>
