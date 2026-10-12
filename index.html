@@ -51,6 +51,7 @@ button {cursor:pointer}
 }
 .fixed {background:var(--mint)}
 .extra {background:var(--cream)}
+.prayer-section {background:#fff}
 .section-head {
   display:flex;justify-content:space-between;align-items:center;
   gap:8px;margin-bottom:12px;
@@ -76,6 +77,26 @@ button {cursor:pointer}
 }
 .check:checked {background:var(--green);border-color:var(--green)}
 .check:checked:after {content:"✓";color:white;font-size:13px}
+
+.prayer-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+.prayer-item {
+  display:flex;align-items:center;gap:9px;
+  padding:12px 10px;border:1px solid var(--border);
+  border-radius:13px;background:#f8faf6;min-width:0;
+  cursor:pointer;transition:background .15s;
+}
+.prayer-item.done {
+  background:var(--mint);border-color:#d5e5d6;
+}
+.prayer-name {font-size:13px;flex:1}
+.prayer-icon {font-size:19px}
+.prayer-item .check {margin-right:auto}
+@media(max-width:350px) {
+  .prayer-grid {grid-template-columns:1fr}
+}
+
 .icon-wrap {position:relative}
 .icon-btn {
   border:1px solid #e8eee6;background:#f7faf5;border-radius:9px;
@@ -123,6 +144,15 @@ button {cursor:pointer}
 
   <div class="days" id="days"></div>
 
+  <!-- قسم الصلاة الجديد -->
+  <section class="section prayer-section">
+    <div class="section-head">
+      <div class="section-title">🕌 متابعة الصلاة</div>
+      <span class="count" id="prayerCount"></span>
+    </div>
+    <div class="prayer-grid" id="prayerList"></div>
+  </section>
+
   <section class="section fixed">
     <div class="section-head">
       <div class="section-title">☀️ المهام الثابتة اليومية</div>
@@ -151,6 +181,14 @@ button {cursor:pointer}
 
 <script>
 const STORAGE_KEY = "dailyPlanner_v1";
+
+const prayerNames = [
+  {id:"fajr",name:"الفجر",icon:"🌅"},
+  {id:"dhuhr",name:"الظهر",icon:"☀️"},
+  {id:"asr",name:"العصر",icon:"🌤️"},
+  {id:"maghrib",name:"المغرب",icon:"🌇"},
+  {id:"isha",name:"العشاء",icon:"🌙"}
+];
 
 const iconChoices = [
 "🧹","✨","🧽","🧺","🧼","🪣","🏠","🛏️","🪴","🌷",
@@ -184,9 +222,14 @@ function defaultFixedTasks() {
 function loadData() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && Array.isArray(saved.fixed)) return saved;
+    if (saved && Array.isArray(saved.fixed)) {
+      if (!saved.extra) saved.extra = {};
+      if (!saved.done) saved.done = {};
+      if (!saved.prayers) saved.prayers = {};
+      return saved;
+    }
   } catch(e) {}
-  return {fixed:defaultFixedTasks(), extra:{}, done:{}};
+  return {fixed:defaultFixedTasks(),extra:{},done:{},prayers:{}};
 }
 
 let data = loadData();
@@ -209,6 +252,11 @@ function extras() {
 function completed() {
   if (!data.done[key()]) data.done[key()] = {};
   return data.done[key()];
+}
+
+function completedPrayers() {
+  if (!data.prayers[key()]) data.prayers[key()] = {};
+  return data.prayers[key()];
 }
 
 function renderDays() {
@@ -238,9 +286,48 @@ function renderDays() {
   }
 }
 
+function renderPrayers() {
+  const list = document.getElementById("prayerList");
+  const doneMap = completedPrayers();
+  list.replaceChildren();
+
+  const finished = prayerNames.filter(p => !!doneMap[p.id]).length;
+  document.getElementById("prayerCount").textContent =
+    `${finished}/5 صلوات`;
+
+  prayerNames.forEach(prayer => {
+    const item = document.createElement("label");
+    item.className = "prayer-item" + (doneMap[prayer.id] ? " done" : "");
+
+    const icon = document.createElement("span");
+    icon.className = "prayer-icon";
+    icon.textContent = prayer.icon;
+
+    const name = document.createElement("span");
+    name.className = "prayer-name";
+    name.textContent = prayer.name;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "check";
+    checkbox.checked = !!doneMap[prayer.id];
+    checkbox.setAttribute("aria-label","صلاة " + prayer.name);
+
+    checkbox.onchange = () => {
+      completedPrayers()[prayer.id] = checkbox.checked;
+      save();
+      renderPrayers();
+    };
+
+    item.append(icon,name,checkbox);
+    list.append(item);
+  });
+}
+
 function render() {
   document.getElementById("selectedDate").value = key();
   renderDays();
+  renderPrayers();
   renderList("fixed",data.fixed);
   renderList("extra",extras());
   save();
@@ -363,7 +450,6 @@ function renderList(type,tasks) {
     row.append(drag,checkbox,name,iconWrap,edit,remove);
     list.append(row);
 
-    // Drag and drop with a touch-friendly handle.
     let startY = 0;
     let moving = false;
 
@@ -409,7 +495,6 @@ function renderList(type,tasks) {
     drag.addEventListener("pointerup",finishDrag);
     drag.addEventListener("pointercancel",finishDrag);
 
-    // Desktop drag-and-drop support.
     row.addEventListener("dragstart",e => {
       e.dataTransfer.setData("text/plain",task.id);
       e.dataTransfer.effectAllowed = "move";
