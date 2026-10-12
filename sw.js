@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "daily-tasks-v3";
+const CACHE_NAME = "daily-tasks-v4";
 
 const FILES = [
   "./",
