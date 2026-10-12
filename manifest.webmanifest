@@ -2,6 +2,8 @@
 {
   "name": "خطوات ",
   "short_name": "خطوات",
+  "src": "icon-new-192.png", 
+  "src": "icon-new-512.png"
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./",
