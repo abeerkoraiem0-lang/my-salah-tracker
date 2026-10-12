@@ -1,148 +1,501 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#e8f0eb">
-<meta name="description" content="جدول أسبوعي بسيط للمهام اليومية">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<title>جدولي الأسبوعي</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7f1">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>مهامي اليومية</title>
+
 <style>
-:root{--ink:#214658;--green:#456f65;--line:#d7e3dd;--mint:#edf3ef;--pink:#f8eeee;--paper:#fbf8f2;--muted:#77928a}
-*{box-sizing:border-box} body{margin:0;background:#f7f4ed;color:var(--ink);font-family:Tahoma,Arial,sans-serif}
-button,input{font:inherit} button{cursor:pointer}
-.app{max-width:760px;margin:auto;padding:14px 12px 32px}
-.top{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0 12px}
-.datebox{display:flex;align-items:center;gap:8px;border:1.5px solid #b9d0c7;border-radius:24px;padding:8px 12px;background:#fffdf8;width:100%;max-width:520px}
-.datebox label{font-size:14px;color:var(--green);white-space:nowrap}
-.datebox input{min-width:0;width:100%;border:0;background:transparent;color:var(--ink);outline:none}
-.subtitle{text-align:center;color:var(--green);font-size:14px;margin:12px 0 8px}
-.heart{text-align:center;color:var(--green);margin-bottom:18px}
-.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:16px}
-.day{border:0;border-radius:15px;padding:12px 2px;background:#eee8df;color:#365d55;font-size:clamp(11px,2.6vw,15px);min-height:48px}
-.day.active{background:#8eafa2;color:white;font-weight:bold}
-.panel{border:1px solid #d6e0dc;border-radius:24px;padding:10px;background:#f9fbf8;margin:12px 0 16px;box-shadow:0 2px 8px #8b9c9010}
-.panel.fixed{background:#f1f5f1}.panel.daily{background:#fbf1f0}
-.panelhead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 7px 12px}
-.panelhead h2{font-size:clamp(18px,4.5vw,25px);margin:0;color:var(--green)}
-.panelhead p{margin:6px 0 0;color:#6f8d84;font-size:13px}
-.headright{display:flex;align-items:center;gap:8px}
-.pill{border:1.5px solid #b9d0c7;border-radius:22px;background:transparent;color:var(--green);padding:8px 13px;white-space:nowrap}
-.tasklist{background:#fffdfa;border-radius:18px;overflow:hidden}
-.task{display:grid;grid-template-columns:36px minmax(0,1fr) 38px 32px;align-items:center;gap:8px;padding:10px 9px;border-bottom:1px solid #e6ece8;min-height:61px}
-.task:last-child{border-bottom:0}
-.task input[type=checkbox]{width:23px;height:23px;accent-color:#618b7c}
-.taskname{font-size:clamp(14px,3.7vw,19px);overflow-wrap:anywhere}
-.task.done .taskname{text-decoration:line-through;color:#92a39c}
-.taskicon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#e2eee7;font-size:19px}
-.edit,.delete{border:0;background:transparent;color:#55796f;padding:4px;font-size:18px}
-.delete{color:#ba7777}
-.addrow{display:flex;gap:8px;align-items:center;padding:10px 4px 2px}
-.addrow input{min-width:0;flex:1;border:1px solid #dbe4df;border-radius:22px;background:#f5f5f1;padding:12px;color:var(--ink)}
-.addrow button{border:0;border-radius:50%;width:42px;height:42px;background:#719789;color:white;font-size:25px}
-.empty{text-align:center;color:#849a92;padding:18px}
-.notice{font-size:12px;color:#789087;text-align:center;margin:18px 0}
-dialog{border:0;border-radius:22px;max-width:calc(100% - 28px);width:420px;padding:20px;background:#fffdf8;color:var(--ink);box-shadow:0 15px 60px #233b3333}
-dialog::backdrop{background:#20332f66}
-dialog h3{margin-top:0;color:var(--green)}
-.field{display:block;margin:12px 0;font-size:14px}.field input,.field select{display:block;width:100%;padding:11px;margin-top:6px;border:1px solid #cbdad3;border-radius:12px;background:white;color:var(--ink)}
-.dialogactions{display:flex;gap:8px;margin-top:16px}.dialogactions button{flex:1;border:0;border-radius:14px;padding:11px;background:#719789;color:white}.dialogactions .cancel{background:#eee9e2;color:#45645b}
-@media(min-width:600px){.app{padding:22px}.task{padding:12px 14px}.panelhead{padding:12px}}
+:root {
+  --bg:#f5f7f1;
+  --green:#789982;
+  --mint:#e8f1e8;
+  --cream:#faf3e7;
+  --text:#405348;
+  --muted:#91a095;
+  --white:#fff;
+  --border:#e4ebe2;
+  --danger:#cf8989;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;min-height:100vh;
+}
+button,input {font:inherit}
+button {cursor:pointer}
+.app {max-width:600px;margin:auto;padding:16px 13px 35px}
+.date-row {display:flex;justify-content:space-between;align-items:center;gap:8px}
+.date-row input {
+  width:190px;max-width:75%;padding:10px;border:1px solid var(--border);
+  border-radius:15px;background:white;color:var(--text);
+}
+.small-btn {
+  border:0;background:var(--mint);color:var(--text);
+  border-radius:12px;padding:10px 13px;
+}
+.motto {text-align:center;color:var(--green);font-size:13px;margin:20px 0}
+.days {display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
+.day {
+  flex:1;min-width:43px;padding:9px 3px;border:0;border-radius:13px;
+  background:#eeefe7;color:#859187;font-size:11px;
+}
+.day b {display:block;font-size:15px;margin-bottom:5px}
+.day.active {background:var(--green);color:white}
+.section {
+  border:1px solid var(--border);border-radius:19px;
+  padding:13px 11px;margin-bottom:15px;
+}
+.fixed {background:var(--mint)}
+.extra {background:var(--cream)}
+.section-head {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-bottom:12px;
+}
+.section-title {font-size:15px;font-weight:bold}
+.count {font-size:11px;color:var(--muted);white-space:nowrap}
+.task-list {display:flex;flex-direction:column;gap:8px;min-height:5px}
+.task {
+  display:flex;align-items:center;gap:8px;padding:10px 7px;
+  background:#ffffffdf;border:1px solid #edf0e9;border-radius:12px;
+}
+.task.dragging {opacity:.4}
+.task-name {flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}
+.task.done .task-name {text-decoration:line-through;color:#9da89e}
+.drag {
+  color:#aab9ac;cursor:grab;padding:5px;touch-action:none;
+  user-select:none;font-size:17px;
+}
+.check {
+  appearance:none;width:19px;height:19px;flex-shrink:0;
+  border:1.5px solid #c7d4c7;border-radius:6px;background:white;
+  display:grid;place-items:center;margin:0;
+}
+.check:checked {background:var(--green);border-color:var(--green)}
+.check:checked:after {content:"✓";color:white;font-size:13px}
+.icon-wrap {position:relative}
+.icon-btn {
+  border:1px solid #e8eee6;background:#f7faf5;border-radius:9px;
+  padding:5px;font-size:18px;color:var(--text);
+}
+.icon-menu {
+  display:none;position:absolute;z-index:5;top:38px;left:0;
+  width:220px;padding:9px;background:white;border:1px solid var(--border);
+  border-radius:13px;box-shadow:0 5px 20px #0001;
+  grid-template-columns:repeat(6,1fr);gap:5px;
+}
+.icon-menu.open {display:grid}
+.icon-option {
+  border:0;background:#f4f7f1;border-radius:8px;padding:6px;font-size:18px;
+}
+.action {border:0;background:transparent;color:#849488;padding:4px}
+.delete {color:var(--danger)}
+.add-row {
+  display:flex;gap:7px;margin-top:10px;padding:6px;
+  border:1px dashed #c7d6c8;border-radius:11px;background:#ffffff85;
+}
+.add-row input {
+  flex:1;min-width:0;border:0;outline:none;background:transparent;
+  padding:7px;color:var(--text);font-size:13px;
+}
+.add-row input::placeholder {color:#9da99f}
+.add-btn {
+  border:0;background:var(--green);color:white;border-radius:9px;
+  width:36px;font-size:22px;
+}
+.extra .add-btn {background:#b19a75}
+.empty {text-align:center;color:#9ba69c;font-size:12px;padding:8px}
 </style>
 </head>
+
 <body>
 <main class="app">
-  <div class="top">
-    <div class="datebox"><span aria-hidden="true">▦</span><label for="weekDate">الأسبوع الحالي:</label><input id="weekDate" type="text" placeholder="اكتبي تاريخ الأسبوع" aria-label="تاريخ الأسبوع الحالي"></div>
+
+  <div class="date-row">
+    <input type="date" id="selectedDate" aria-label="اختيار التاريخ">
+    <button class="small-btn" id="todayBtn">اليوم</button>
   </div>
-  <div class="subtitle">خطوة صغيرة كل يوم .. تصنع فرقًا كبيرًا!</div>
-  <div class="heart">━━━━ ♥ ━━━━</div>
-  <nav class="days" id="days" aria-label="أيام الأسبوع"></nav>
-  <section class="panel fixed">
-    <div class="panelhead">
-      <div><h2>المهام الثابتة اليومية</h2><p>يمكنك تعديلها أو إضافة وحذف أي مهمة.</p></div>
-      <button class="pill" id="addFixed">＋ إضافة</button>
+
+  <div class="motto">♡ ─ خطوة صغيرة كل يوم ... تصنع فرقًا كبيرًا! ─ ♡</div>
+
+  <div class="days" id="days"></div>
+
+  <section class="section fixed">
+    <div class="section-head">
+      <div class="section-title">☀️ المهام الثابتة اليومية</div>
+      <span class="count" id="fixedCount"></span>
     </div>
-    <div class="tasklist" id="fixedList"></div>
+    <div class="task-list" id="fixedList"></div>
+    <form class="add-row" id="fixedForm">
+      <input id="fixedInput" placeholder="إضافة مهمة جديدة..." maxlength="100">
+      <button class="add-btn" aria-label="إضافة">+</button>
+    </form>
   </section>
-  <section class="panel daily">
-    <div class="panelhead">
-      <div class="headright"><span style="font-size:23px">▦</span><h2 id="dayTitle">السبت</h2></div>
-      <button class="pill" id="addDaily">＋ مهمة</button>
+
+  <section class="section extra">
+    <div class="section-head">
+      <div class="section-title">✨ المهام الإضافية</div>
+      <span class="count" id="extraCount"></span>
     </div>
-    <div class="tasklist" id="dailyList"></div>
-    <div class="addrow"><input id="newTask" placeholder="إضافة مهمة جديدة..." aria-label="اسم المهمة الجديدة"><button id="quickAdd" aria-label="إضافة المهمة">+</button></div>
+    <div class="task-list" id="extraList"></div>
+    <form class="add-row" id="extraForm">
+      <input id="extraInput" placeholder="إضافة مهمة جديدة..." maxlength="100">
+      <button class="add-btn" aria-label="إضافة">+</button>
+    </form>
   </section>
+
 </main>
-<dialog id="taskDialog">
-  <form method="dialog" id="taskForm">
-    <h3 id="dialogTitle">تعديل المهمة</h3>
-    <label class="field">اسم المهمة<input id="taskText" required maxlength="100"></label>
-    <label class="field">رمز المهمة
-      <select id="taskEmoji"><option>🧹</option><option>✨</option><option>🚽</option><option>📖</option><option>🧺</option><option>🛏️</option><option>🍲</option><option>👨‍👩‍👧</option><option>🎒</option><option>🪥</option><option>🧸</option><option>✏️</option><option>💧</option><option>⭐</option><option>🌿</option><option>❤️</option></select>
-    </label>
-    <div class="dialogactions"><button type="submit" id="saveTask">حفظ</button><button type="button" class="cancel" id="cancelDialog">إلغاء</button></div>
-  </form>
-</dialog>
+
 <script>
-const dayNames=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
-const defaultFixed=[
- {text:'ترويق البيت',emoji:'🧹',done:false},
- {text:'تلميع الأسطح',emoji:'✨',done:false},
- {text:'تنظيف الحمام',emoji:'🚽',done:false},
- {text:'ورد القرآن',emoji:'📖',done:false}
+const STORAGE_KEY = "dailyPlanner_v1";
+
+const iconChoices = [
+"🧹","✨","🧽","🧺","🧼","🪣","🏠","🛏️","🪴","🌷",
+"💧","🍽️","🍳","🥪","🍎","🥛","🛒","📚","✏️","📖",
+"📝","🎒","🏫","💻","📱","⏰","🗓️","✅","⭐","❤️",
+"🤲","📿","🕌","🧎","🌙","☀️","🚿","🪥","👕","👶",
+"🧸","🎨","🧩","⚽","🚶","💊","🌿","📦","🪡","🔑",
+"💰","📞","🎁","💪","🥗","🍲","☕","🛠️","🔔","📌",
+"🗑️","🪟","🌈","🌻","🦋","🌊","💤","🎵","🎧","🚗",
+"✈️","💡","🧠","🧘","📷","✉️","🛍️","🐟","🧑‍🍳","🪴"
 ];
-const defaultDaily={
- 'السبت':[{text:'غسيل المواعين',emoji:'🧺'},{text:'ترتيب غرفة النوم',emoji:'🛏️'},{text:'تحضير الغذاء',emoji:'🍲'},{text:'مساعدة الأولاد في واجباتهم',emoji:'👨‍👩‍👧'}],
- 'الأحد':[], 'الإثنين':[], 'الثلاثاء':[], 'الأربعاء':[], 'الخميس':[], 'الجمعة':[]
+
+const weekNames = [
+"الأحد","الإثنين","الثلاثاء","الأربعاء",
+"الخميس","الجمعة","السبت"
+];
+
+const makeId = () =>
+  Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+const formatDate = d =>
+  `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+function defaultFixedTasks() {
+  return [
+    {id:makeId(),name:"ترويق البيت",icon:"🧹"},
+    {id:makeId(),name:"تلميع الأسطح",icon:"✨"}
+  ];
+}
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && Array.isArray(saved.fixed)) return saved;
+  } catch(e) {}
+  return {fixed:defaultFixedTasks(), extra:{}, done:{}};
+}
+
+let data = loadData();
+let selectedDate = new Date();
+selectedDate.setHours(12,0,0,0);
+
+function save() {
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+function key() {
+  return formatDate(selectedDate);
+}
+
+function extras() {
+  if (!data.extra[key()]) data.extra[key()] = [];
+  return data.extra[key()];
+}
+
+function completed() {
+  if (!data.done[key()]) data.done[key()] = {};
+  return data.done[key()];
+}
+
+function renderDays() {
+  const container = document.getElementById("days");
+  container.replaceChildren();
+
+  const sunday = new Date(selectedDate);
+  sunday.setDate(selectedDate.getDate()-selectedDate.getDay());
+
+  for (let i=0;i<7;i++) {
+    const d = new Date(sunday);
+    d.setDate(sunday.getDate()+i);
+
+    const button = document.createElement("button");
+    button.className = "day" + (formatDate(d)===key() ? " active" : "");
+
+    const number = document.createElement("b");
+    number.textContent = d.getDate();
+    button.append(number,document.createTextNode(weekNames[d.getDay()]));
+
+    button.onclick = () => {
+      selectedDate = d;
+      render();
+    };
+
+    container.append(button);
+  }
+}
+
+function render() {
+  document.getElementById("selectedDate").value = key();
+  renderDays();
+  renderList("fixed",data.fixed);
+  renderList("extra",extras());
+  save();
+}
+
+function renderList(type,tasks) {
+  const list = document.getElementById(type+"List");
+  list.replaceChildren();
+
+  const doneMap = completed();
+  const finished = tasks.filter(t => !!doneMap[t.id]).length;
+
+  document.getElementById(type+"Count").textContent =
+    `${finished}/${tasks.length} مهام`;
+
+  if (!tasks.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "لسه مفيش مهام هنا";
+    list.append(empty);
+  }
+
+  tasks.forEach(task => {
+    const row = document.createElement("div");
+    row.className = "task" + (doneMap[task.id] ? " done" : "");
+    row.dataset.id = task.id;
+    row.dataset.type = type;
+    row.draggable = true;
+
+    const drag = document.createElement("span");
+    drag.className = "drag";
+    drag.textContent = "⠿";
+    drag.title = "اسحبي لإعادة الترتيب";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "check";
+    checkbox.checked = !!doneMap[task.id];
+    checkbox.setAttribute("aria-label","إنجاز المهمة");
+    checkbox.onchange = () => {
+      completed()[task.id] = checkbox.checked;
+      save();
+      render();
+    };
+
+    const name = document.createElement("span");
+    name.className = "task-name";
+    name.textContent = task.name;
+
+    const iconWrap = document.createElement("div");
+    iconWrap.className = "icon-wrap";
+
+    const iconButton = document.createElement("button");
+    iconButton.type = "button";
+    iconButton.className = "icon-btn";
+    iconButton.textContent = task.icon || "⭐";
+    iconButton.title = "اختيار الأيقونة";
+
+    const menu = document.createElement("div");
+    menu.className = "icon-menu";
+
+    iconChoices.forEach(icon => {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.className = "icon-option";
+      option.textContent = icon;
+      option.onclick = e => {
+        e.stopPropagation();
+        task.icon = icon;
+        save();
+        render();
+      };
+      menu.append(option);
+    });
+
+    iconButton.onclick = e => {
+      e.stopPropagation();
+      document.querySelectorAll(".icon-menu.open").forEach(m => {
+        if (m !== menu) m.classList.remove("open");
+      });
+      menu.classList.toggle("open");
+    };
+
+    iconWrap.append(iconButton,menu);
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "action";
+    edit.textContent = "✎";
+    edit.title = "تعديل";
+    edit.onclick = () => {
+      const value = prompt("تعديل اسم المهمة:",task.name);
+      if (value !== null && value.trim()) {
+        task.name = value.trim().slice(0,100);
+        save();
+        render();
+      }
+    };
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "action delete";
+    remove.textContent = "🗑";
+    remove.title = "حذف";
+    remove.onclick = () => {
+      if (!confirm("هل تريدين حذف هذه المهمة؟")) return;
+
+      if (type === "fixed") {
+        data.fixed = data.fixed.filter(t => t.id !== task.id);
+        Object.values(data.done).forEach(d => delete d[task.id]);
+      } else {
+        data.extra[key()] = data.extra[key()].filter(t => t.id !== task.id);
+        delete completed()[task.id];
+      }
+
+      save();
+      render();
+    };
+
+    row.append(drag,checkbox,name,iconWrap,edit,remove);
+    list.append(row);
+
+    // Drag and drop with a touch-friendly handle.
+    let startY = 0;
+    let moving = false;
+
+    drag.addEventListener("pointerdown",e => {
+      startY = e.clientY;
+      moving = true;
+      row.classList.add("dragging");
+      drag.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    });
+
+    drag.addEventListener("pointermove",e => {
+      if (!moving || Math.abs(e.clientY-startY)<5) return;
+      const target = document.elementFromPoint(e.clientX,e.clientY)
+        ?.closest(".task");
+
+      if (!target || target === row || target.dataset.type !== type) return;
+
+      const parent = target.parentElement;
+      const rect = target.getBoundingClientRect();
+
+      if (e.clientY < rect.top + rect.height/2) {
+        parent.insertBefore(row,target);
+      } else {
+        parent.insertBefore(row,target.nextSibling);
+      }
+    });
+
+    const finishDrag = () => {
+      if (!moving) return;
+      moving = false;
+      row.classList.remove("dragging");
+
+      const ids = [...list.querySelectorAll(".task")].map(el=>el.dataset.id);
+      const ordered = ids.map(id=>tasks.find(t=>t.id===id)).filter(Boolean);
+      if (ordered.length === tasks.length) {
+        tasks.splice(0,tasks.length,...ordered);
+        save();
+        render();
+      }
+    };
+
+    drag.addEventListener("pointerup",finishDrag);
+    drag.addEventListener("pointercancel",finishDrag);
+
+    // Desktop drag-and-drop support.
+    row.addEventListener("dragstart",e => {
+      e.dataTransfer.setData("text/plain",task.id);
+      e.dataTransfer.effectAllowed = "move";
+    });
+
+    row.addEventListener("dragover",e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+    });
+
+    row.addEventListener("drop",e => {
+      e.preventDefault();
+      const fromId = e.dataTransfer.getData("text/plain");
+      if (!fromId || fromId === task.id) return;
+
+      const from = tasks.findIndex(t=>t.id===fromId);
+      const to = tasks.findIndex(t=>t.id===task.id);
+      if (from<0 || to<0) return;
+
+      const moved = tasks.splice(from,1)[0];
+      tasks.splice(to,0,moved);
+      save();
+      render();
+    });
+  });
+}
+
+document.addEventListener("click",e => {
+  if (!e.target.closest(".icon-wrap")) {
+    document.querySelectorAll(".icon-menu.open")
+      .forEach(m=>m.classList.remove("open"));
+  }
+});
+
+function addTask(type,inputId) {
+  const input = document.getElementById(inputId);
+  const name = input.value.trim();
+  if (!name) {
+    input.focus();
+    return;
+  }
+
+  const task = {
+    id:makeId(),
+    name:name.slice(0,100),
+    icon:type==="fixed" ? "⭐" : "✨"
+  };
+
+  if (type==="fixed") data.fixed.push(task);
+  else extras().push(task);
+
+  input.value = "";
+  save();
+  render();
+  input.focus();
+}
+
+document.getElementById("fixedForm").onsubmit = e => {
+  e.preventDefault();
+  addTask("fixed","fixedInput");
 };
-let state;
-try{state=JSON.parse(localStorage.getItem('weeklyRoutineApp_v1'))}catch(e){}
-if(!state) state={weekDate:'',selectedDay:'السبت',fixed:defaultFixed,daily:defaultDaily};
-for(const d of dayNames) if(!state.daily[d]) state.daily[d]=[];
-let editing=null;
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem('weeklyRoutineApp_v1',JSON.stringify(state))}
-function renderDays(){
- $('days').innerHTML='';
- dayNames.forEach(d=>{const b=document.createElement('button');b.className='day'+(state.selectedDay===d?' active':'');b.textContent=d;b.onclick=()=>{state.selectedDay=d;save();render()};$('days').appendChild(b)});
- $('dayTitle').textContent=state.selectedDay;
+
+document.getElementById("extraForm").onsubmit = e => {
+  e.preventDefault();
+  addTask("extra","extraInput");
+};
+
+document.getElementById("selectedDate").onchange = e => {
+  if (!e.target.value) return;
+  selectedDate = new Date(e.target.value+"T12:00:00");
+  render();
+};
+
+document.getElementById("todayBtn").onclick = () => {
+  selectedDate = new Date();
+  selectedDate.setHours(12,0,0,0);
+  render();
+};
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load",() => {
+    navigator.serviceWorker.register("./sw.js");
+  });
 }
-function taskRow(task,type,index){
- const row=document.createElement('div');row.className='task'+(task.done?' done':'');
- const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!task.done;cb.setAttribute('aria-label','إنجاز المهمة');cb.onchange=()=>{task.done=cb.checked;save();render()};
- const name=document.createElement('div');name.className='taskname';name.textContent=task.text;
- const icon=document.createElement('div');icon.className='taskicon';icon.textContent=task.emoji||'⭐';
- const actions=document.createElement('div');actions.style.display='flex';actions.style.gap='1px';
- const edit=document.createElement('button');edit.className='edit';edit.textContent='✎';edit.title='تعديل المهمة';edit.onclick=()=>openEdit(type,index);
- const del=document.createElement('button');del.className='delete';del.textContent='×';del.title='حذف المهمة';del.onclick=()=>{if(confirm('حذف المهمة «'+task.text+'»؟')){(type==='fixed'?state.fixed:state.daily[state.selectedDay]).splice(index,1);save();render()}};
- actions.append(edit,del);row.append(cb,name,icon,actions);return row;
-}
-function renderList(target,items,type){
- const el=$(target);el.innerHTML='';
- if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent='لا توجد مهام هنا بعد — أضيفي مهمة جديدة';el.appendChild(e);return}
- items.forEach((t,i)=>el.appendChild(taskRow(t,type,i)));
-}
-function render(){renderDays();renderList('fixedList',state.fixed,'fixed');renderList('dailyList',state.daily[state.selectedDay],'daily');$('weekDate').value=state.weekDate||''}
-function openEdit(type,index=null){
- editing={type,index};
- const task=index===null?{text:'',emoji:'⭐'}:(type==='fixed'?state.fixed[index]:state.daily[state.selectedDay][index]);
- $('dialogTitle').textContent=index===null?'إضافة مهمة':'تعديل المهمة';
- $('taskText').value=task.text;$('taskEmoji').value=task.emoji||'⭐';$('taskDialog').showModal();
-}
-$('taskForm').onsubmit=(e)=>{e.preventDefault();const item={text:$('taskText').value.trim(),emoji:$('taskEmoji').value,done:false};if(!item.text)return;
- const arr=editing.type==='fixed'?state.fixed:state.daily[state.selectedDay];
- if(editing.index===null)arr.push(item);else{item.done=arr[editing.index].done;arr[editing.index]=item}
- save();$('taskDialog').close();render()};
-$('cancelDialog').onclick=()=>$('taskDialog').close();
-$('addFixed').onclick=()=>openEdit('fixed');
-$('addDaily').onclick=()=>openEdit('daily');
-function quickAdd(){const val=$('newTask').value.trim();if(!val)return;state.daily[state.selectedDay].push({text:val,emoji:'⭐',done:false});$('newTask').value='';save();render()}
-$('quickAdd').onclick=quickAdd;$('newTask').addEventListener('keydown',e=>{if(e.key==='Enter')quickAdd()});
-$('weekDate').addEventListener('input',e=>{state.weekDate=e.target.value;save()});
+
 render();
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
-</body></html>
+</body>
+</html>
