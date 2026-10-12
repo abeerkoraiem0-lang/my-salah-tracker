@@ -79,23 +79,38 @@ button {cursor:pointer}
 .check:checked:after {content:"✓";color:white;font-size:13px}
 
 .prayer-grid {
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+  direction:rtl;
 }
 .prayer-item {
-  display:flex;align-items:center;gap:9px;
-  padding:12px 10px;border:1px solid var(--border);
-  border-radius:13px;background:#f8faf6;min-width:0;
-  cursor:pointer;transition:background .15s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:10px 2px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#f8faf6;
+  min-width:0;
+  cursor:pointer;
 }
 .prayer-item.done {
-  background:var(--mint);border-color:#d5e5d6;
+  background:var(--mint);
+  border-color:#d5e5d6;
 }
-.prayer-name {font-size:13px;flex:1}
-.prayer-icon {font-size:19px}
-.prayer-item .check {margin-right:auto}
-@media(max-width:350px) {
-  .prayer-grid {grid-template-columns:1fr}
+.prayer-name {
+  font-size:11px;
+  text-align:center;
+  white-space:nowrap;
 }
+.prayer-icon {
+  font-size:21px;
+  line-height:1.3;
+}
+.prayer-item .check {margin:0}
 
 .icon-wrap {position:relative}
 .icon-btn {
@@ -144,15 +159,6 @@ button {cursor:pointer}
 
   <div class="days" id="days"></div>
 
-  <!-- قسم الصلاة الجديد -->
-  <section class="section prayer-section">
-    <div class="section-head">
-      <div class="section-title">🕌 متابعة الصلاة</div>
-      <span class="count" id="prayerCount"></span>
-    </div>
-    <div class="prayer-grid" id="prayerList"></div>
-  </section>
-
   <section class="section fixed">
     <div class="section-head">
       <div class="section-title">☀️ المهام الثابتة اليومية</div>
@@ -175,6 +181,15 @@ button {cursor:pointer}
       <input id="extraInput" placeholder="إضافة مهمة جديدة..." maxlength="100">
       <button class="add-btn" aria-label="إضافة">+</button>
     </form>
+  </section>
+
+  <!-- قسم الصلاة في آخر الصفحة -->
+  <section class="section prayer-section">
+    <div class="section-head">
+      <div class="section-title">🕌 متابعة الصلاة</div>
+      <span class="count" id="prayerCount"></span>
+    </div>
+    <div class="prayer-grid" id="prayerList"></div>
   </section>
 
 </main>
@@ -327,9 +342,9 @@ function renderPrayers() {
 function render() {
   document.getElementById("selectedDate").value = key();
   renderDays();
-  renderPrayers();
   renderList("fixed",data.fixed);
   renderList("extra",extras());
+  renderPrayers();
   save();
 }
 
