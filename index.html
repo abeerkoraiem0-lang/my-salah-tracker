@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f5f7f1">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
-<link rel="apple-touch-icon" href="./icon-192.png">
-<title>خطوات</title>
-<title>خطوات </title>
+<title>مهامي اليومية</title>
 
 <style>
 :root {
@@ -147,6 +143,22 @@ button {cursor:pointer}
 }
 .extra .add-btn {background:#b19a75}
 .empty {text-align:center;color:#9ba69c;font-size:12px;padding:8px}
+
+.month-total {
+  text-align:center;background:var(--mint);border-radius:12px;
+  padding:14px;margin-bottom:12px;
+}
+.month-prayer-row {
+  display:flex;align-items:center;gap:8px;padding:9px 5px;
+  color:var(--text);border-bottom:1px solid #f0f3ee;
+}
+.month-prayer-row:last-child {border-bottom:0}
+.month-prayer-name {flex:1}
+.month-prayer-count {font-size:12px;color:var(--muted)}
+#summaryMonth {
+  max-width:155px;width:48%;padding:8px;border:1px solid var(--border);
+  border-radius:10px;background:white;color:var(--text);
+}
 </style>
 </head>
 
@@ -161,14 +173,7 @@ button {cursor:pointer}
   <div class="motto">♡ ─ خطوة صغيرة كل يوم ... تصنع فرقًا كبيرًا! ─ ♡</div>
 
   <div class="days" id="days"></div>
-<!-- قسم الصلاة في آخر الصفحة -->
-  <section class="section prayer-section">
-    <div class="section-head">
-      <div class="section-title">🕌 متابعة الصلاة</div>
-      <span class="count" id="prayerCount"></span>
-    </div>
-    <div class="prayer-grid" id="prayerList"></div>
-  </section>
+
   <section class="section fixed">
     <div class="section-head">
       <div class="section-title">☀️ المهام الثابتة اليومية</div>
@@ -193,7 +198,22 @@ button {cursor:pointer}
     </form>
   </section>
 
-  
+  <section class="section prayer-section">
+    <div class="section-head">
+      <div class="section-title">🕌 متابعة الصلاة</div>
+      <span class="count" id="prayerCount"></span>
+    </div>
+    <div class="prayer-grid" id="prayerList"></div>
+  </section>
+
+  <section class="section prayer-section">
+    <div class="section-head">
+      <div class="section-title">📅 ملخص الصلاة الشهري</div>
+      <input type="month" id="summaryMonth" aria-label="اختيار الشهر">
+    </div>
+    <div class="month-total" id="monthlyTotal"></div>
+    <div id="monthlyPrayerList"></div>
+  </section>
 
 </main>
 
@@ -209,14 +229,14 @@ const prayerNames = [
 ];
 
 const iconChoices = [
-"🧹","✨","🧽","🧺","🧼","🪣","🏠","🛏️",
-"💧","🍽️","🥪","🍎","🛒","📚","✏️","📖",
+"🧹","✨","🧽","🧺","🧼","🪣","🏠","🛏️","🪴","🌷",
+"💧","🍽️","🍳","🥪","🍎","🥛","🛒","📚","✏️","📖",
 "📝","🎒","🏫","💻","📱","⏰","🗓️","✅","⭐","❤️",
-"🤲","📿","🕌","🌙","☀️","🚿","🪥","👕","👶",
-"🧸","🧩","⚽","🚶","💊","🌿","📦","🪡","🔑",
-"💰","🎁","💪","🥗","🛠️","🍚",
-"🗑️","🪟","🚽","🍇","🌊","💤","🚗",
-"✈️","📷","🛍️","🧑‍🍳","🍰","🍿","🍪","🎛️"
+"🤲","📿","🕌","🧎","🌙","☀️","🚿","🪥","👕","👶",
+"🧸","🎨","🧩","⚽","🚶","💊","🌿","📦","🪡","🔑",
+"💰","📞","🎁","💪","🥗","🍲","☕","🛠️","🔔","📌",
+"🗑️","🪟","🌈","🌻","🦋","🌊","💤","🎵","🎧","🚗",
+"✈️","💡","🧠","🧘","📷","✉️","🛍️","🐟","🧑‍🍳","🪴"
 ];
 
 const weekNames = [
@@ -247,15 +267,80 @@ function loadData() {
       return saved;
     }
   } catch(e) {}
-  return {fixed:defaultFixedTasks(),extra:{},done:{},prayers:{}};
+
+  return {
+    fixed:defaultFixedTasks(),
+    extra:{},
+    done:{},
+    prayers:{}
+  };
 }
 
 let data = loadData();
+
 let selectedDate = new Date();
 selectedDate.setHours(12,0,0,0);
 
 function save() {
   localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+/* ترحيل المهام الإضافية غير المكتملة من الأيام السابقة */
+let lastRolloverDate = "";
+
+function rolloverUnfinishedTasksThroughToday() {
+  const today = formatDate(new Date());
+
+  if (lastRolloverDate === today) return false;
+
+  let changed = false;
+
+  if (!data.extra) data.extra = {};
+  if (!data.done) data.done = {};
+
+  const oldDates = Object.keys(data.extra)
+    .filter(date => date < today)
+    .sort();
+
+  if (!Array.isArray(data.extra[today])) {
+    data.extra[today] = [];
+  }
+
+  for (const date of oldDates) {
+    const tasks = data.extra[date] || [];
+    const doneOnThatDay = data.done[date] || {};
+
+    const completedTasks = [];
+    const pendingTasks = [];
+
+    for (const task of tasks) {
+      if (doneOnThatDay[task.id]) {
+        completedTasks.push(task);
+      } else {
+        pendingTasks.push(task);
+      }
+    }
+
+    if (pendingTasks.length > 0) {
+      const todayTasks = data.extra[today];
+      const existingIds = new Set(todayTasks.map(task => task.id));
+
+      pendingTasks.forEach(task => {
+        if (!existingIds.has(task.id)) {
+          todayTasks.push(task);
+        }
+      });
+
+      data.extra[date] = completedTasks;
+      changed = true;
+    }
+  }
+
+  lastRolloverDate = today;
+
+  if (changed) save();
+
+  return changed;
 }
 
 function key() {
@@ -289,11 +374,16 @@ function renderDays() {
     d.setDate(sunday.getDate()+i);
 
     const button = document.createElement("button");
-    button.className = "day" + (formatDate(d)===key() ? " active" : "");
+    button.className =
+      "day" + (formatDate(d)===key() ? " active" : "");
 
     const number = document.createElement("b");
     number.textContent = d.getDate();
-    button.append(number,document.createTextNode(weekNames[d.getDay()]));
+
+    button.append(
+      number,
+      document.createTextNode(weekNames[d.getDay()])
+    );
 
     button.onclick = () => {
       selectedDate = d;
@@ -307,15 +397,21 @@ function renderDays() {
 function renderPrayers() {
   const list = document.getElementById("prayerList");
   const doneMap = completedPrayers();
+
   list.replaceChildren();
 
-  const finished = prayerNames.filter(p => !!doneMap[p.id]).length;
+  const finished = prayerNames.filter(
+    prayer => !!doneMap[prayer.id]
+  ).length;
+
   document.getElementById("prayerCount").textContent =
     `${finished}/5 صلوات`;
 
   prayerNames.forEach(prayer => {
     const item = document.createElement("label");
-    item.className = "prayer-item" + (doneMap[prayer.id] ? " done" : "");
+
+    item.className =
+      "prayer-item" + (doneMap[prayer.id] ? " done" : "");
 
     const icon = document.createElement("span");
     icon.className = "prayer-icon";
@@ -329,12 +425,17 @@ function renderPrayers() {
     checkbox.type = "checkbox";
     checkbox.className = "check";
     checkbox.checked = !!doneMap[prayer.id];
-    checkbox.setAttribute("aria-label","صلاة " + prayer.name);
+
+    checkbox.setAttribute(
+      "aria-label",
+      "صلاة " + prayer.name
+    );
 
     checkbox.onchange = () => {
       completedPrayers()[prayer.id] = checkbox.checked;
       save();
       renderPrayers();
+      renderMonthlySummary();
     };
 
     item.append(icon,name,checkbox);
@@ -342,12 +443,82 @@ function renderPrayers() {
   });
 }
 
+/* ملخص الصلاة للشهر المختار */
+function renderMonthlySummary() {
+  const monthInput = document.getElementById("summaryMonth");
+
+  if (!monthInput.value) {
+    monthInput.value = formatDate(new Date()).slice(0,7);
+  }
+
+  const month = monthInput.value;
+  if (!month) return;
+
+  const [year, monthNumber] = month.split("-").map(Number);
+  const daysInMonth = new Date(year,monthNumber,0).getDate();
+
+  const counts = prayerNames.map(prayer => {
+    let count = 0;
+
+    for (let day=1;day<=daysInMonth;day++) {
+      const date =
+        `${month}-${String(day).padStart(2,"0")}`;
+
+      if (data.prayers?.[date]?.[prayer.id]) {
+        count++;
+      }
+    }
+
+    return {...prayer,count};
+  });
+
+  const total = counts.reduce(
+    (sum,prayer) => sum + prayer.count,
+    0
+  );
+
+  document.getElementById("monthlyTotal").innerHTML =
+    `<div style="font-size:26px;font-weight:bold;color:#405348">
+       ${total} / ${daysInMonth*5}
+     </div>
+     <div style="font-size:12px;color:#718074;margin-top:4px">
+       إجمالي الصلوات المسجّلة
+     </div>`;
+
+  const list = document.getElementById("monthlyPrayerList");
+  list.replaceChildren();
+
+  counts.forEach(prayer => {
+    const row = document.createElement("div");
+    row.className = "month-prayer-row";
+
+    const name = document.createElement("span");
+    name.className = "month-prayer-name";
+    name.textContent = `${prayer.icon} ${prayer.name}`;
+
+    const count = document.createElement("span");
+    count.className = "month-prayer-count";
+    count.textContent = `${prayer.count} / ${daysInMonth}`;
+
+    row.append(name,count);
+    list.append(row);
+  });
+}
+
+document.getElementById("summaryMonth").addEventListener(
+  "change",
+  renderMonthlySummary
+);
+
 function render() {
   document.getElementById("selectedDate").value = key();
+
   renderDays();
   renderList("fixed",data.fixed);
   renderList("extra",extras());
   renderPrayers();
+  renderMonthlySummary();
+
   save();
 }
 
@@ -356,7 +527,10 @@ function renderList(type,tasks) {
   list.replaceChildren();
 
   const doneMap = completed();
-  const finished = tasks.filter(t => !!doneMap[t.id]).length;
+
+  const finished = tasks.filter(
+    task => !!doneMap[task.id]
+  ).length;
 
   document.getElementById(type+"Count").textContent =
     `${finished}/${tasks.length} مهام`;
@@ -370,7 +544,10 @@ function renderList(type,tasks) {
 
   tasks.forEach(task => {
     const row = document.createElement("div");
-    row.className = "task" + (doneMap[task.id] ? " done" : "");
+
+    row.className =
+      "task" + (doneMap[task.id] ? " done" : "");
+
     row.dataset.id = task.id;
     row.dataset.type = type;
     row.draggable = true;
@@ -385,6 +562,7 @@ function renderList(type,tasks) {
     checkbox.className = "check";
     checkbox.checked = !!doneMap[task.id];
     checkbox.setAttribute("aria-label","إنجاز المهمة");
+
     checkbox.onchange = () => {
       completed()[task.id] = checkbox.checked;
       save();
@@ -412,20 +590,24 @@ function renderList(type,tasks) {
       option.type = "button";
       option.className = "icon-option";
       option.textContent = icon;
+
       option.onclick = e => {
         e.stopPropagation();
         task.icon = icon;
         save();
         render();
       };
+
       menu.append(option);
     });
 
     iconButton.onclick = e => {
       e.stopPropagation();
+
       document.querySelectorAll(".icon-menu.open").forEach(m => {
         if (m !== menu) m.classList.remove("open");
       });
+
       menu.classList.toggle("open");
     };
 
@@ -436,8 +618,10 @@ function renderList(type,tasks) {
     edit.className = "action";
     edit.textContent = "✎";
     edit.title = "تعديل";
+
     edit.onclick = () => {
       const value = prompt("تعديل اسم المهمة:",task.name);
+
       if (value !== null && value.trim()) {
         task.name = value.trim().slice(0,100);
         save();
@@ -450,14 +634,23 @@ function renderList(type,tasks) {
     remove.className = "action delete";
     remove.textContent = "🗑";
     remove.title = "حذف";
+
     remove.onclick = () => {
       if (!confirm("هل تريدين حذف هذه المهمة؟")) return;
 
       if (type === "fixed") {
-        data.fixed = data.fixed.filter(t => t.id !== task.id);
-        Object.values(data.done).forEach(d => delete d[task.id]);
+        data.fixed = data.fixed.filter(
+          item => item.id !== task.id
+        );
+
+        Object.values(data.done).forEach(d => {
+          delete d[task.id];
+        });
       } else {
-        data.extra[key()] = data.extra[key()].filter(t => t.id !== task.id);
+        data.extra[key()] = data.extra[key()].filter(
+          item => item.id !== task.id
+        );
+
         delete completed()[task.id];
       }
 
@@ -481,10 +674,16 @@ function renderList(type,tasks) {
 
     drag.addEventListener("pointermove",e => {
       if (!moving || Math.abs(e.clientY-startY)<5) return;
-      const target = document.elementFromPoint(e.clientX,e.clientY)
-        ?.closest(".task");
 
-      if (!target || target === row || target.dataset.type !== type) return;
+      const target = document.elementFromPoint(
+        e.clientX,e.clientY
+      )?.closest(".task");
+
+      if (
+        !target ||
+        target === row ||
+        target.dataset.type !== type
+      ) return;
 
       const parent = target.parentElement;
       const rect = target.getBoundingClientRect();
@@ -498,11 +697,18 @@ function renderList(type,tasks) {
 
     const finishDrag = () => {
       if (!moving) return;
+
       moving = false;
       row.classList.remove("dragging");
 
-      const ids = [...list.querySelectorAll(".task")].map(el=>el.dataset.id);
-      const ordered = ids.map(id=>tasks.find(t=>t.id===id)).filter(Boolean);
+      const ids = [
+        ...list.querySelectorAll(".task")
+      ].map(el => el.dataset.id);
+
+      const ordered = ids
+        .map(id => tasks.find(task => task.id===id))
+        .filter(Boolean);
+
       if (ordered.length === tasks.length) {
         tasks.splice(0,tasks.length,...ordered);
         save();
@@ -525,15 +731,18 @@ function renderList(type,tasks) {
 
     row.addEventListener("drop",e => {
       e.preventDefault();
+
       const fromId = e.dataTransfer.getData("text/plain");
       if (!fromId || fromId === task.id) return;
 
-      const from = tasks.findIndex(t=>t.id===fromId);
-      const to = tasks.findIndex(t=>t.id===task.id);
+      const from = tasks.findIndex(item => item.id===fromId);
+      const to = tasks.findIndex(item => item.id===task.id);
+
       if (from<0 || to<0) return;
 
       const moved = tasks.splice(from,1)[0];
       tasks.splice(to,0,moved);
+
       save();
       render();
     });
@@ -543,13 +752,14 @@ function renderList(type,tasks) {
 document.addEventListener("click",e => {
   if (!e.target.closest(".icon-wrap")) {
     document.querySelectorAll(".icon-menu.open")
-      .forEach(m=>m.classList.remove("open"));
+      .forEach(m => m.classList.remove("open"));
   }
 });
 
 function addTask(type,inputId) {
   const input = document.getElementById(inputId);
   const name = input.value.trim();
+
   if (!name) {
     input.focus();
     return;
@@ -561,8 +771,11 @@ function addTask(type,inputId) {
     icon:type==="fixed" ? "⭐" : "✨"
   };
 
-  if (type==="fixed") data.fixed.push(task);
-  else extras().push(task);
+  if (type==="fixed") {
+    data.fixed.push(task);
+  } else {
+    extras().push(task);
+  }
 
   input.value = "";
   save();
@@ -582,6 +795,7 @@ document.getElementById("extraForm").onsubmit = e => {
 
 document.getElementById("selectedDate").onchange = e => {
   if (!e.target.value) return;
+
   selectedDate = new Date(e.target.value+"T12:00:00");
   render();
 };
@@ -598,7 +812,20 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+/* ترحيل المهام عند فتح التطبيق */
+rolloverUnfinishedTasksThroughToday();
 render();
+
+/* فحص الترحيل عند الرجوع للتطبيق */
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) return;
+
+  const changed = rolloverUnfinishedTasksThroughToday();
+
+  if (changed && key() === formatDate(new Date())) {
+    render();
+  }
+});
 </script>
 </body>
 </html>
