@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -162,12 +161,61 @@ button {cursor:pointer}
   gap:8px;margin:13px 0 10px;font-size:13px
 }
 #summaryPanel[hidden] {display:none}
+
+/* تبويبات التطبيق */
+.tabs{display:flex;gap:8px;margin:0 0 16px;padding:5px;background:#e8f1e8;border-radius:15px}
+.tab-btn{flex:1;border:0;border-radius:11px;padding:11px 8px;background:transparent;color:var(--text);font-weight:bold}
+.tab-btn.active{background:var(--green);color:#fff;box-shadow:0 2px 6px #0000000d}
+.page[hidden]{display:none!important}
+.expense-page{display:flex;flex-direction:column;gap:14px}
+.expense-section{background:#fff;border:1px solid var(--border);border-radius:19px;padding:14px 12px}
+.expense-section.month-expense{background:var(--mint)}
+.expense-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.expense-title{font-weight:bold;font-size:15px}
+.budget-box{background:#fff;border:1px solid #e3ebe2;border-radius:13px;padding:11px;margin-bottom:12px}.budget-box label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin-bottom:8px}.budget-box input{width:125px;max-width:48%;padding:8px;border:1px solid #dfe8de;border-radius:9px;color:var(--text);background:#fff;font-size:13px}.budget-remaining{font-size:12px;font-weight:bold;color:#557c62;text-align:center;padding-top:3px}.expense-edit-fields{display:grid;grid-template-columns:minmax(0,1fr) 95px auto;gap:5px;margin-top:7px}.expense-edit-fields input{min-width:0;width:100%;padding:8px;border:1px solid #dfe8de;border-radius:8px;font-size:12px}.expense-edit-fields button{border:0;border-radius:8px;padding:6px 9px;background:var(--green);color:#fff;font-size:12px}.expense-total{background:#ffffffc9;border:1px solid #e3ebe2;border-radius:13px;padding:12px;text-align:center;margin-bottom:12px}
+.expense-total strong{display:block;font-size:24px;color:#557c62;margin-bottom:4px}
+.expense-total small{color:var(--muted);font-size:11px}
+.expense-month-picker{width:100%;padding:10px;border:1px solid var(--border);border-radius:11px;background:white;color:var(--text);margin-bottom:12px}
+.expense-list{display:flex;flex-direction:column;gap:7px}
+.expense-row{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #edf0e9;border-radius:11px;padding:9px}
+.expense-description{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}
+.expense-amount{font-size:13px;font-weight:bold;white-space:nowrap;color:#557c62}
+.expense-actions{display:flex;gap:2px}
+.expense-actions button{border:0;background:transparent;color:#849488;padding:4px;font-size:15px}
+.expense-actions .delete{color:var(--danger)}
+.expense-form{display:grid;grid-template-columns:minmax(0,1fr) 105px 38px;gap:6px;margin-top:11px}
+.expense-form input{min-width:0;width:100%;padding:10px 8px;border:1px solid #dfe8de;border-radius:10px;background:#fff;color:var(--text);font-size:12px}
+.expense-form button,.period-add-btn{border:0;border-radius:10px;background:var(--green);color:#fff;font-size:21px}
+.period-card{background:#fff;border:1px solid var(--border);border-radius:17px;padding:12px}
+.period-top{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:10px}
+.period-name{font-weight:bold;font-size:14px}
+.period-tools{display:flex;gap:3px}
+.period-tools button{border:0;background:#f3f7f1;color:#718477;border-radius:8px;padding:5px 8px}
+.period-dates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.period-dates label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.period-dates input{width:100%;min-width:0;padding:8px 5px;border:1px solid var(--border);border-radius:9px;background:#fafcf9;color:var(--text);font-size:12px}
+.period-add{background:#faf3e7;border:1px dashed #cbb995;border-radius:16px;padding:12px}
+.period-add-title{font-size:13px;font-weight:bold;margin-bottom:9px}
+.period-add-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.period-add-fields label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.period-add-fields input{width:100%;min-width:0;padding:9px 5px;border:1px solid #e6ddcd;border-radius:9px;background:white;color:var(--text)}
+.period-add-btn{width:100%;padding:10px;margin-top:9px;font-size:13px}
+.expense-empty{color:#9ba69c;text-align:center;font-size:12px;padding:9px}
+.expense-hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}
+@media(max-width:360px){.expense-form{grid-template-columns:minmax(0,1fr) 88px 34px}.expense-form input{font-size:11px}}
+
 </style>
 </head>
 
 <body>
 <main class="app">
 
+
+  <nav class="tabs" aria-label="أقسام التطبيق">
+    <button type="button" class="tab-btn active" id="routineTab">☀️ روتيني</button>
+    <button type="button" class="tab-btn" id="expensesTab">💰 المصروفات</button>
+  </nav>
+  <div class="page" id="routinePage">
   <div class="date-row">
     <input type="date" id="selectedDate" aria-label="اختيار التاريخ">
     <button class="small-btn" id="todayBtn">اليوم</button>
@@ -224,6 +272,53 @@ button {cursor:pointer}
       <button class="add-btn" aria-label="إضافة">+</button>
     </form>
   </section>
+
+
+  </div>
+
+  <div class="page expense-page" id="expensesPage" hidden>
+    <section class="expense-section month-expense">
+      <div class="expense-head">
+        <div class="expense-title">🌿 مصروف الشهر</div>
+        <span class="count">مستقل عن الأسابيع</span>
+      </div>
+      <input type="month" class="expense-month-picker" id="expenseMonth" aria-label="اختيار شهر المصروفات">
+      <div class="budget-box">
+        <label>المبلغ المخصص للشهر
+          <input id="monthBudget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="حددي الميزانية">
+        </label>
+        <div class="budget-remaining" id="monthRemaining"></div>
+      </div>
+      <div class="expense-total" id="monthExpenseTotal"></div>
+      <div class="expense-list" id="monthExpenseList"></div>
+      <form class="expense-form" id="monthExpenseForm">
+        <input id="monthExpenseDescription" placeholder="وصف الحاجة..." maxlength="120" required>
+        <input id="monthExpenseAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="المبلغ" required>
+        <button type="submit" aria-label="إضافة مصروف الشهر">+</button>
+      </form>
+    </section>
+
+    <section class="expense-section">
+      <div class="expense-head">
+        <div class="expense-title">📅 مصروف الفترات الأسبوعية</div>
+        <span class="count">كل فترة مستقلة</span>
+      </div>
+      <div id="periodsList" class="expense-page"></div>
+      <div class="period-add">
+        <div class="period-add-title">＋ إضافة فترة جديدة</div>
+        <div class="period-add-fields">
+          <label>من تاريخ
+            <input type="date" id="newPeriodStart">
+          </label>
+          <label>إلى تاريخ
+            <input type="date" id="newPeriodEnd">
+          </label>
+        </div>
+        <button type="button" class="period-add-btn" id="addPeriodBtn">إضافة الفترة</button>
+        <div class="expense-hint">اختاري بداية ونهاية كل فترة بنفسك. يمكنك تعديل التواريخ لاحقًا، وإضافة أي عدد من الفترات.</div>
+      </div>
+    </section>
+  </div>
 
 </main>
 
@@ -437,51 +532,24 @@ function renderMonthlySummary() {
 
   document.getElementById("monthlyTotal").innerHTML =
     `<div style="font-size:26px;font-weight:bold;color:#405348">${total} / ${daysInMonth*5}</div>
-     <div style="font-size:12px;color:#718074;margin-top:4px">إجمالي الصلوات المُنجزة خلال الشهر</div>`;
+     <div style="font-size:12px;color:#718074;margin-top:4px">إجمالي الصلوات التي تم تسجيلها خلال الشهر</div>`;
 }
 
-document.getElementById("summaryMonth").addEventListener("change", renderMonthlySummary);
-document.getElementById("summaryToggle").addEventListener("click", () => {
-  const panel = document.getElementById("summaryPanel");
-  const isOpening = panel.hidden;
-  panel.hidden = !isOpening;
-  document.getElementById("summaryToggle").setAttribute("aria-expanded", String(isOpening));
-  document.getElementById("summaryArrow").textContent = isOpening ? "－" : "＋";
-  if (isOpening) renderMonthlySummary();
-});
-
-function render() {
-  document.getElementById("selectedDate").value = key();
-  renderDays();
-  renderList("fixed",data.fixed);
-  renderList("extra",extras());
-  renderPrayers();
-  renderMonthlySummary();
-  save();
-}
-
-function renderList(type,tasks) {
-  const list = document.getElementById(type+"List");
+function renderTaskList(listId, tasks, type) {
+  const list = document.getElementById(listId);
   list.replaceChildren();
-
-  const doneMap = completed();
-  const finished = tasks.filter(t => !!doneMap[t.id]).length;
-
-  document.getElementById(type+"Count").textContent =
-    `${finished}/${tasks.length} مهام`;
 
   if (!tasks.length) {
     const empty = document.createElement("div");
     empty.className = "empty";
-    empty.textContent = "لسه مفيش مهام هنا";
+    empty.textContent = "لا توجد مهام حتى الآن";
     list.append(empty);
   }
 
   tasks.forEach(task => {
     const row = document.createElement("div");
-    row.className = "task" + (doneMap[task.id] ? " done" : "");
+    row.className = "task";
     row.dataset.id = task.id;
-    row.dataset.type = type;
     row.draggable = true;
 
     const drag = document.createElement("span");
@@ -489,157 +557,121 @@ function renderList(type,tasks) {
     drag.textContent = "⠿";
     drag.title = "اسحبي لإعادة الترتيب";
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.className = "check";
-    checkbox.checked = !!doneMap[task.id];
-    checkbox.setAttribute("aria-label","إنجاز المهمة");
-    checkbox.onchange = () => {
-      completed()[task.id] = checkbox.checked;
-      save();
-      render();
-    };
-
     const name = document.createElement("span");
     name.className = "task-name";
     name.textContent = task.name;
 
-    const iconWrap = document.createElement("div");
-    iconWrap.className = "icon-wrap";
-
-    const iconButton = document.createElement("button");
-    iconButton.type = "button";
-    iconButton.className = "icon-btn";
-    iconButton.textContent = task.icon || "⭐";
-    iconButton.title = "اختيار الأيقونة";
-
-    const menu = document.createElement("div");
-    menu.className = "icon-menu";
-
-    iconChoices.forEach(icon => {
-      const option = document.createElement("button");
-      option.type = "button";
-      option.className = "icon-option";
-      option.textContent = icon;
-      option.onclick = e => {
-        e.stopPropagation();
-        task.icon = icon;
-        save();
-        render();
-      };
-      menu.append(option);
-    });
-
-    iconButton.onclick = e => {
-      e.stopPropagation();
-      document.querySelectorAll(".icon-menu.open").forEach(m => {
-        if (m !== menu) m.classList.remove("open");
-      });
-      menu.classList.toggle("open");
-    };
-
-    iconWrap.append(iconButton,menu);
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.gap = "3px";
 
     const edit = document.createElement("button");
-    edit.type = "button";
     edit.className = "action";
-    edit.textContent = "✎";
+    edit.type = "button";
+    edit.textContent = "✏️";
     edit.title = "تعديل";
     edit.onclick = () => {
-      const value = prompt("تعديل اسم المهمة:",task.name);
-      if (value !== null && value.trim()) {
-        task.name = value.trim().slice(0,100);
+      const updated = prompt("تعديل اسم المهمة:",task.name);
+      if (updated && updated.trim()) {
+        task.name = updated.trim();
         save();
         render();
       }
     };
 
     const remove = document.createElement("button");
-    remove.type = "button";
     remove.className = "action delete";
-    remove.textContent = "🗑";
+    remove.type = "button";
+    remove.textContent = "🗑️";
     remove.title = "حذف";
     remove.onclick = () => {
-      if (!confirm("هل تريدين حذف هذه المهمة؟")) return;
+      if (!confirm("هل تريدين حذف المهمة؟")) return;
 
       if (type === "fixed") {
         data.fixed = data.fixed.filter(t => t.id !== task.id);
-        Object.values(data.done).forEach(d => delete d[task.id]);
       } else {
-        data.extra[key()] = data.extra[key()].filter(t => t.id !== task.id);
-        delete completed()[task.id];
+        data.extra[key()] = extras().filter(t => t.id !== task.id);
       }
 
       save();
       render();
     };
 
-    row.append(drag,checkbox,name,iconWrap,edit,remove);
-    list.append(row);
+    const iconWrap = document.createElement("div");
+    iconWrap.className = "icon-wrap";
 
-    let startY = 0;
-    let moving = false;
+    const iconButton = document.createElement("button");
+    iconButton.className = "icon-btn";
+    iconButton.type = "button";
+    iconButton.textContent = task.icon || "📌";
 
-    drag.addEventListener("pointerdown",e => {
-      startY = e.clientY;
-      moving = true;
-      row.classList.add("dragging");
-      drag.setPointerCapture(e.pointerId);
-      e.preventDefault();
-    });
+    const menu = document.createElement("div");
+    menu.className = "icon-menu";
 
-    drag.addEventListener("pointermove",e => {
-      if (!moving || Math.abs(e.clientY-startY)<5) return;
-      const target = document.elementFromPoint(e.clientX,e.clientY)
-        ?.closest(".task");
-
-      if (!target || target === row || target.dataset.type !== type) return;
-
-      const parent = target.parentElement;
-      const rect = target.getBoundingClientRect();
-
-      if (e.clientY < rect.top + rect.height/2) {
-        parent.insertBefore(row,target);
-      } else {
-        parent.insertBefore(row,target.nextSibling);
-      }
-    });
-
-    const finishDrag = () => {
-      if (!moving) return;
-      moving = false;
-      row.classList.remove("dragging");
-
-      const ids = [...list.querySelectorAll(".task")].map(el=>el.dataset.id);
-      const ordered = ids.map(id=>tasks.find(t=>t.id===id)).filter(Boolean);
-      if (ordered.length === tasks.length) {
-        tasks.splice(0,tasks.length,...ordered);
+    iconChoices.forEach(choice => {
+      const option = document.createElement("button");
+      option.className = "icon-option";
+      option.type = "button";
+      option.textContent = choice;
+      option.onclick = () => {
+        task.icon = choice;
         save();
         render();
-      }
-    };
+      };
+      menu.append(option);
+    });
 
-    drag.addEventListener("pointerup",finishDrag);
-    drag.addEventListener("pointercancel",finishDrag);
+    iconButton.onclick = () => menu.classList.toggle("open");
+    iconWrap.append(iconButton,menu);
 
-    row.addEventListener("dragstart",e => {
-      e.dataTransfer.setData("text/plain",task.id);
-      e.dataTransfer.effectAllowed = "move";
+    actions.append(edit,remove);
+    row.append(drag,iconWrap,name,actions);
+
+    if (type === "extra") {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "check";
+      checkbox.checked = !!completed()[task.id];
+      checkbox.onchange = () => {
+        completed()[task.id] = checkbox.checked;
+        save();
+        render();
+      };
+      row.append(checkbox);
+      if (checkbox.checked) row.classList.add("done");
+    }
+
+    list.append(row);
+  });
+
+  enableDrag(list,tasks,type);
+}
+
+function enableDrag(list,tasks,type) {
+  let dragged = null;
+
+  list.querySelectorAll(".task").forEach(row => {
+    row.addEventListener("dragstart",() => {
+      dragged = row.dataset.id;
+      row.classList.add("dragging");
+    });
+
+    row.addEventListener("dragend",() => {
+      row.classList.remove("dragging");
     });
 
     row.addEventListener("dragover",e => {
       e.preventDefault();
-      e.dataTransfer.dropEffect = "move";
     });
 
     row.addEventListener("drop",e => {
       e.preventDefault();
-      const fromId = e.dataTransfer.getData("text/plain");
-      if (!fromId || fromId === task.id) return;
+      const target = row.dataset.id;
+      if (!dragged || dragged === target) return;
 
-      const from = tasks.findIndex(t=>t.id===fromId);
-      const to = tasks.findIndex(t=>t.id===task.id);
-      if (from<0 || to<0) return;
+      const from = tasks.findIndex(t => t.id === dragged);
+      const to = tasks.findIndex(t => t.id === target);
+      if (from < 0 || to < 0) return;
 
       const moved = tasks.splice(from,1)[0];
       tasks.splice(to,0,moved);
@@ -649,45 +681,25 @@ function renderList(type,tasks) {
   });
 }
 
-document.addEventListener("click",e => {
-  if (!e.target.closest(".icon-wrap")) {
-    document.querySelectorAll(".icon-menu.open")
-      .forEach(m=>m.classList.remove("open"));
-  }
-});
+function renderCounts() {
+  document.getElementById("fixedCount").textContent =
+    `${data.fixed.length} مهام`;
 
-function addTask(type,inputId) {
-  const input = document.getElementById(inputId);
-  const name = input.value.trim();
-  if (!name) {
-    input.focus();
-    return;
-  }
-
-  const task = {
-    id:makeId(),
-    name:name.slice(0,100),
-    icon:type==="fixed" ? "⭐" : "✨"
-  };
-
-  if (type==="fixed") data.fixed.push(task);
-  else extras().push(task);
-
-  input.value = "";
-  save();
-  render();
-  input.focus();
+  const list = extras();
+  const done = list.filter(t => completed()[t.id]).length;
+  document.getElementById("extraCount").textContent =
+    `${done}/${list.length} مكتملة`;
 }
 
-document.getElementById("fixedForm").onsubmit = e => {
-  e.preventDefault();
-  addTask("fixed","fixedInput");
-};
-
-document.getElementById("extraForm").onsubmit = e => {
-  e.preventDefault();
-  addTask("extra","extraInput");
-};
+function render() {
+  document.getElementById("selectedDate").value = key();
+  renderDays();
+  renderPrayers();
+  renderMonthlySummary();
+  renderTaskList("fixedList",data.fixed,"fixed");
+  renderTaskList("extraList",extras(),"extra");
+  renderCounts();
+}
 
 document.getElementById("selectedDate").onchange = e => {
   if (!e.target.value) return;
@@ -701,6 +713,1070 @@ document.getElementById("todayBtn").onclick = () => {
   render();
 };
 
+document.getElementById("fixedForm").onsubmit = e => {
+  e.preventDefault();
+  const input = document.getElementById("fixedInput");
+  const name = input.value.trim();
+  if (!name) return;
+
+  data.fixed.push({id:makeId(),name,icon:"📌"});
+  input.value = "";
+  save();
+  render();
+};
+
+document.getElementById("extraForm").onsubmit = e => {
+  e.preventDefault();
+  const input = document.getElementById("extraInput");
+  const name = input.value.trim();
+  if (!name) return;
+
+  extras().push({id:makeId(),name,icon:"⭐"});
+  input.value = "";
+  save();
+  render();
+};
+
+document.getElementById("summaryToggle").onclick = () => {
+  const panel = document.getElementById("summaryPanel");
+  const isOpen = !panel.hidden;
+  panel.hidden = isOpen;
+  document.getElementById("summaryToggle").setAttribute("aria-expanded",String(!isOpen));
+  document.getElementById("summaryArrow").textContent = isOpen ? "＋" : "－";
+};
+
+document.getElementById("summaryMonth").onchange = renderMonthlySummary;
+
+/* المصروفات */
+const EXPENSE_STORAGE_KEY = "dailyPlannerExpenses_v1";
+let expenseData = loadExpenses();
+let selectedExpenseMonth = localMonthKey();
+
+function localMonthKey(){
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+}
+
+function loadExpenses(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(EXPENSE_STORAGE_KEY));
+    if(saved && typeof saved === "object") return saved;
+  }catch(e){}
+  return {months:{}};
+}
+
+function saveExpenses(){
+  localStorage.setItem(EXPENSE_STORAGE_KEY,JSON.stringify(expenseData));
+}
+
+function expenseMonthData(){
+  if(!expenseData.months) expenseData.months = {};
+  if(!expenseData.months[selectedExpenseMonth]){
+    expenseData.months[selectedExpenseMonth] = {
+      monthBudget:0,
+      monthItems:[],
+      periods:[]
+    };
+  }
+  const month = expenseData.months[selectedExpenseMonth];
+  if(!Array.isArray(month.monthItems)) month.monthItems=[];
+  if(!Array.isArray(month.periods)) month.periods=[];
+  return month;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7f1">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>مهامي اليومية</title>
+
+<style>
+:root {
+  --bg:#f5f7f1;
+  --green:#789982;
+  --mint:#e8f1e8;
+  --cream:#faf3e7;
+  --text:#405348;
+  --muted:#91a095;
+  --white:#fff;
+  --border:#e4ebe2;
+  --danger:#cf8989;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;min-height:100vh;
+}
+button,input {font:inherit}
+button {cursor:pointer}
+.app {max-width:600px;margin:auto;padding:16px 13px 35px}
+.date-row {display:flex;justify-content:space-between;align-items:center;gap:8px}
+.date-row input {
+  width:190px;max-width:75%;padding:10px;border:1px solid var(--border);
+  border-radius:15px;background:white;color:var(--text);
+}
+.small-btn {
+  border:0;background:var(--mint);color:var(--text);
+  border-radius:12px;padding:10px 13px;
+}
+.motto {text-align:center;color:var(--green);font-size:13px;margin:20px 0}
+.days {display:flex;gap:6px;margin-bottom:16px;overflow-x:auto}
+.day {
+  flex:1;min-width:43px;padding:9px 3px;border:0;border-radius:13px;
+  background:#eeefe7;color:#859187;font-size:11px;
+}
+.day b {display:block;font-size:15px;margin-bottom:5px}
+.day.active {background:var(--green);color:white}
+.section {
+  border:1px solid var(--border);border-radius:19px;
+  padding:13px 11px;margin-bottom:15px;
+}
+.fixed {background:var(--mint)}
+.extra {background:var(--cream)}
+.prayer-section {background:#fff}
+.section-head {
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-bottom:12px;
+}
+.section-title {font-size:15px;font-weight:bold}
+.count {font-size:11px;color:var(--muted);white-space:nowrap}
+.task-list {display:flex;flex-direction:column;gap:8px;min-height:5px}
+.task {
+  display:flex;align-items:center;gap:8px;padding:10px 7px;
+  background:#ffffffdf;border:1px solid #edf0e9;border-radius:12px;
+}
+.task.dragging {opacity:.4}
+.task-name {flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}
+.task.done .task-name {text-decoration:line-through;color:#9da89e}
+.drag {
+  color:#aab9ac;cursor:grab;padding:5px;touch-action:none;
+  user-select:none;font-size:17px;
+}
+.check {
+  appearance:none;width:19px;height:19px;flex-shrink:0;
+  border:1.5px solid #c7d4c7;border-radius:6px;background:white;
+  display:grid;place-items:center;margin:0;
+}
+.check:checked {background:var(--green);border-color:var(--green)}
+.check:checked:after {content:"✓";color:white;font-size:13px}
+
+.prayer-grid {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:5px;
+  direction:rtl;
+}
+.prayer-item {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:10px 2px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:#f8faf6;
+  min-width:0;
+  cursor:pointer;
+}
+.prayer-item.done {
+  background:var(--mint);
+  border-color:#d5e5d6;
+}
+.prayer-name {
+  font-size:11px;
+  text-align:center;
+  white-space:nowrap;
+}
+.prayer-icon {
+  font-size:21px;
+  line-height:1.3;
+}
+.prayer-item .check {margin:0}
+
+.icon-wrap {position:relative}
+.icon-btn {
+  border:1px solid #e8eee6;background:#f7faf5;border-radius:9px;
+  padding:5px;font-size:18px;color:var(--text);
+}
+.icon-menu {
+  display:none;position:absolute;z-index:5;top:38px;left:0;
+  width:220px;padding:9px;background:white;border:1px solid var(--border);
+  border-radius:13px;box-shadow:0 5px 20px #0001;
+  grid-template-columns:repeat(6,1fr);gap:5px;
+}
+.icon-menu.open {display:grid}
+.icon-option {
+  border:0;background:#f4f7f1;border-radius:8px;padding:6px;font-size:18px;
+}
+.action {border:0;background:transparent;color:#849488;padding:4px}
+.delete {color:var(--danger)}
+.add-row {
+  display:flex;gap:7px;margin-top:10px;padding:6px;
+  border:1px dashed #c7d6c8;border-radius:11px;background:#ffffff85;
+}
+.add-row input {
+  flex:1;min-width:0;border:0;outline:none;background:transparent;
+  padding:7px;color:var(--text);font-size:13px;
+}
+.add-row input::placeholder {color:#9da99f}
+.add-btn {
+  border:0;background:var(--green);color:white;border-radius:9px;
+  width:36px;font-size:22px;
+}
+.extra .add-btn {background:#b19a75}
+.empty {text-align:center;color:#9ba69c;font-size:12px;padding:8px}
+.month-total {
+  text-align:center;background:var(--mint);border-radius:12px;
+  padding:14px;margin-bottom:12px;
+}
+#summaryMonth {
+  max-width:170px;width:58%;padding:8px;border:1px solid var(--border);
+  border-radius:10px;background:white;color:var(--text);
+}
+.summary-section {background:#fff}
+.summary-toggle {
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  text-align:right;font-weight:bold;padding:12px 14px
+}
+.summary-month-row {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:8px;margin:13px 0 10px;font-size:13px
+}
+#summaryPanel[hidden] {display:none}
+
+/* تبويبات التطبيق */
+.tabs{display:flex;gap:8px;margin:0 0 16px;padding:5px;background:#e8f1e8;border-radius:15px}
+.tab-btn{flex:1;border:0;border-radius:11px;padding:11px 8px;background:transparent;color:var(--text);font-weight:bold}
+.tab-btn.active{background:var(--green);color:#fff;box-shadow:0 2px 6px #0000000d}
+.page[hidden]{display:none!important}
+.expense-page{display:flex;flex-direction:column;gap:14px}
+.expense-section{background:#fff;border:1px solid var(--border);border-radius:19px;padding:14px 12px}
+.expense-section.month-expense{background:var(--mint)}
+.expense-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.expense-title{font-weight:bold;font-size:15px}
+.budget-box{background:#fff;border:1px solid #e3ebe2;border-radius:13px;padding:11px;margin-bottom:12px}.budget-box label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin-bottom:8px}.budget-box input{width:125px;max-width:48%;padding:8px;border:1px solid #dfe8de;border-radius:9px;color:var(--text);background:#fff;font-size:13px}.budget-remaining{font-size:12px;font-weight:bold;color:#557c62;text-align:center;padding-top:3px}.expense-edit-fields{display:grid;grid-template-columns:minmax(0,1fr) 95px auto;gap:5px;margin-top:7px}.expense-edit-fields input{min-width:0;width:100%;padding:8px;border:1px solid #dfe8de;border-radius:8px;font-size:12px}.expense-edit-fields button{border:0;border-radius:8px;padding:6px 9px;background:var(--green);color:#fff;font-size:12px}.expense-total{background:#ffffffc9;border:1px solid #e3ebe2;border-radius:13px;padding:12px;text-align:center;margin-bottom:12px}
+.expense-total strong{display:block;font-size:24px;color:#557c62;margin-bottom:4px}
+.expense-total small{color:var(--muted);font-size:11px}
+.expense-month-picker{width:100%;padding:10px;border:1px solid var(--border);border-radius:11px;background:white;color:var(--text);margin-bottom:12px}
+.expense-list{display:flex;flex-direction:column;gap:7px}
+.expense-row{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #edf0e9;border-radius:11px;padding:9px}
+.expense-description{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}
+.expense-amount{font-size:13px;font-weight:bold;white-space:nowrap;color:#557c62}
+.expense-actions{display:flex;gap:2px}
+.expense-actions button{border:0;background:transparent;color:#849488;padding:4px;font-size:15px}
+.expense-actions .delete{color:var(--danger)}
+.expense-form{display:grid;grid-template-columns:minmax(0,1fr) 105px 38px;gap:6px;margin-top:11px}
+.expense-form input{min-width:0;width:100%;padding:10px 8px;border:1px solid #dfe8de;border-radius:10px;background:#fff;color:var(--text);font-size:12px}
+.expense-form button,.period-add-btn{border:0;border-radius:10px;background:var(--green);color:#fff;font-size:21px}
+.period-card{background:#fff;border:1px solid var(--border);border-radius:17px;padding:12px}
+.period-top{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:10px}
+.period-name{font-weight:bold;font-size:14px}
+.period-tools{display:flex;gap:3px}
+.period-tools button{border:0;background:#f3f7f1;color:#718477;border-radius:8px;padding:5px 8px}
+.period-dates{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.period-dates label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.period-dates input{width:100%;min-width:0;padding:8px 5px;border:1px solid var(--border);border-radius:9px;background:#fafcf9;color:var(--text);font-size:12px}
+.period-add{background:#faf3e7;border:1px dashed #cbb995;border-radius:16px;padding:12px}
+.period-add-title{font-size:13px;font-weight:bold;margin-bottom:9px}
+.period-add-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.period-add-fields label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.period-add-fields input{width:100%;min-width:0;padding:9px 5px;border:1px solid #e6ddcd;border-radius:9px;background:white;color:var(--text)}
+.period-add-btn{width:100%;padding:10px;margin-top:9px;font-size:13px}
+.expense-empty{color:#9ba69c;text-align:center;font-size:12px;padding:9px}
+.expense-hint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}
+@media(max-width:360px){.expense-form{grid-template-columns:minmax(0,1fr) 88px 34px}.expense-form input{font-size:11px}}
+
+</style>
+</head>
+
+<body>
+<main class="app">
+
+
+  <nav class="tabs" aria-label="أقسام التطبيق">
+    <button type="button" class="tab-btn active" id="routineTab">☀️ روتيني</button>
+    <button type="button" class="tab-btn" id="expensesTab">💰 المصروفات</button>
+  </nav>
+  <div class="page" id="routinePage">
+  <div class="date-row">
+    <input type="date" id="selectedDate" aria-label="اختيار التاريخ">
+    <button class="small-btn" id="todayBtn">اليوم</button>
+  </div>
+
+  <div class="motto">♡ ─ خطوة صغيرة كل يوم ... تصنع فرقًا كبيرًا! ─ ♡</div>
+
+  <div class="days" id="days"></div>
+
+  <!-- الصلاة في أول الصفحة -->
+  <section class="section prayer-section">
+    <div class="section-head">
+      <div class="section-title">🕌 متابعة الصلاة</div>
+      <span class="count" id="prayerCount"></span>
+    </div>
+    <div class="prayer-grid" id="prayerList"></div>
+  </section>
+
+  <!-- ملخص الشهر داخل زرار قابل للفتح -->
+  <section class="section prayer-section summary-section">
+    <button class="small-btn summary-toggle" id="summaryToggle"
+      type="button" aria-expanded="false" aria-controls="summaryPanel">
+     ✳️  ملخص الشهر <span id="summaryArrow">＋</span>
+    </button>
+    <div id="summaryPanel" hidden>
+      <div class="summary-month-row">
+        <label for="summaryMonth">اختاري الشهر:</label>
+        <input type="month" id="summaryMonth" aria-label="اختيار الشهر">
+      </div>
+      <div class="month-total" id="monthlyTotal"></div>
+    </div>
+  </section>
+
+  <section class="section fixed">
+    <div class="section-head">
+      <div class="section-title">☀️ المهام الثابتة اليومية</div>
+      <span class="count" id="fixedCount"></span>
+    </div>
+    <div class="task-list" id="fixedList"></div>
+    <form class="add-row" id="fixedForm">
+      <input id="fixedInput" placeholder="إضافة مهمة جديدة..." maxlength="100">
+      <button class="add-btn" aria-label="إضافة">+</button>
+    </form>
+  </section>
+
+  <section class="section extra">
+    <div class="section-head">
+      <div class="section-title">✨ المهام الإضافية</div>
+      <span class="count" id="extraCount"></span>
+    </div>
+    <div class="task-list" id="extraList"></div>
+    <form class="add-row" id="extraForm">
+      <input id="extraInput" placeholder="إضافة مهمة جديدة..." maxlength="100">
+      <button class="add-btn" aria-label="إضافة">+</button>
+    </form>
+  </section>
+
+
+  </div>
+
+  <div class="page expense-page" id="expensesPage" hidden>
+    <section class="expense-section month-expense">
+      <div class="expense-head">
+        <div class="expense-title">🌿 مصروف الشهر</div>
+        <span class="count">مستقل عن الأسابيع</span>
+      </div>
+      <input type="month" class="expense-month-picker" id="expenseMonth" aria-label="اختيار شهر المصروفات">
+      <div class="budget-box">
+        <label>المبلغ المخصص للشهر
+          <input id="monthBudget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="حددي الميزانية">
+        </label>
+        <div class="budget-remaining" id="monthRemaining"></div>
+      </div>
+      <div class="expense-total" id="monthExpenseTotal"></div>
+      <div class="expense-list" id="monthExpenseList"></div>
+      <form class="expense-form" id="monthExpenseForm">
+        <input id="monthExpenseDescription" placeholder="وصف الحاجة..." maxlength="120" required>
+        <input id="monthExpenseAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="المبلغ" required>
+        <button type="submit" aria-label="إضافة مصروف الشهر">+</button>
+      </form>
+    </section>
+
+    <section class="expense-section">
+      <div class="expense-head">
+        <div class="expense-title">📅 مصروف الفترات الأسبوعية</div>
+        <span class="count">كل فترة مستقلة</span>
+      </div>
+      <div id="periodsList" class="expense-page"></div>
+      <div class="period-add">
+        <div class="period-add-title">＋ إضافة فترة جديدة</div>
+        <div class="period-add-fields">
+          <label>من تاريخ
+            <input type="date" id="newPeriodStart">
+          </label>
+          <label>إلى تاريخ
+            <input type="date" id="newPeriodEnd">
+          </label>
+        </div>
+        <button type="button" class="period-add-btn" id="addPeriodBtn">إضافة الفترة</button>
+        <div class="expense-hint">اختاري بداية ونهاية كل فترة بنفسك. يمكنك تعديل التواريخ لاحقًا، وإضافة أي عدد من الفترات.</div>
+      </div>
+    </section>
+  </div>
+
+</main>
+
+<script>
+const STORAGE_KEY = "dailyPlanner_v1";
+
+const prayerNames = [
+  {id:"fajr",name:"الفجر",icon:"🌅"},
+  {id:"dhuhr",name:"الظهر",icon:"☀️"},
+  {id:"asr",name:"العصر",icon:"🌤️"},
+  {id:"maghrib",name:"المغرب",icon:"🌇"},
+  {id:"isha",name:"العشاء",icon:"🌙"}
+];
+
+const iconChoices = [
+"🧹","✨","🧽","🧺","🧼","🪣","🏠","🛏️","🪴","🌷",
+"💧","🍽️","🍳","🥪","🍎","🥛","🛒","📚","✏️","📖",
+"📝","🎒","🏫","💻","📱","⏰","🗓️","✅","⭐","❤️",
+"🤲","📿","🕌","🧎","🌙","☀️","🚿","🪥","👕","👶",
+"🧸","🎨","🧩","⚽","🚶","💊","🌿","📦","🪡","🔑",
+"💰","📞","🎁","💪","🥗","🍲","☕","🛠️","🔔","📌",
+"🗑️","🪟","🌈","🌻","🦋","🌊","💤","🎵","🎧","🚗",
+"✈️","💡","🧠","🧘","📷","✉️","🛍️","🐟","🧑‍🍳","🪴"
+];
+
+const weekNames = [
+"الأحد","الإثنين","الثلاثاء","الأربعاء",
+"الخميس","الجمعة","السبت"
+];
+
+const makeId = () =>
+  Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+const formatDate = d =>
+  `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+
+function defaultFixedTasks() {
+  return [
+    {id:makeId(),name:"ترويق البيت",icon:"🧹"},
+    {id:makeId(),name:"تلميع الأسطح",icon:"✨"}
+  ];
+}
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && Array.isArray(saved.fixed)) {
+      if (!saved.extra) saved.extra = {};
+      if (!saved.done) saved.done = {};
+      if (!saved.prayers) saved.prayers = {};
+      return saved;
+    }
+  } catch(e) {}
+  return {fixed:defaultFixedTasks(),extra:{},done:{},prayers:{}};
+}
+
+let data = loadData();
+let selectedDate = new Date();
+selectedDate.setHours(12,0,0,0);
+
+function save() {
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+}
+
+let lastRolloverDate = "";
+
+function rolloverUnfinishedTasksThroughToday() {
+  const today = formatDate(new Date());
+  if (lastRolloverDate === today) return false;
+
+  let changed = false;
+  if (!data.extra) data.extra = {};
+  if (!data.done) data.done = {};
+
+  const oldDates = Object.keys(data.extra)
+    .filter(date => date < today)
+    .sort();
+
+  if (!Array.isArray(data.extra[today])) data.extra[today] = [];
+
+  for (const date of oldDates) {
+    const tasks = data.extra[date] || [];
+    const doneOnThatDay = data.done[date] || {};
+    const completedTasks = [];
+    const pendingTasks = [];
+
+    for (const task of tasks) {
+      if (doneOnThatDay[task.id]) completedTasks.push(task);
+      else pendingTasks.push(task);
+    }
+
+    if (pendingTasks.length > 0) {
+      const todayTasks = data.extra[today];
+      const existingIds = new Set(todayTasks.map(task => task.id));
+      pendingTasks.forEach(task => {
+        if (!existingIds.has(task.id)) todayTasks.push(task);
+      });
+      data.extra[date] = completedTasks;
+      changed = true;
+    }
+  }
+
+  lastRolloverDate = today;
+  if (changed) save();
+  return changed;
+}
+
+function key() {
+  return formatDate(selectedDate);
+}
+
+function extras() {
+  if (!data.extra[key()]) data.extra[key()] = [];
+  return data.extra[key()];
+}
+
+function completed() {
+  if (!data.done[key()]) data.done[key()] = {};
+  return data.done[key()];
+}
+
+function completedPrayers() {
+  if (!data.prayers[key()]) data.prayers[key()] = {};
+  return data.prayers[key()];
+}
+
+function renderDays() {
+  const container = document.getElementById("days");
+  container.replaceChildren();
+
+  const sunday = new Date(selectedDate);
+  sunday.setDate(selectedDate.getDate()-selectedDate.getDay());
+
+  for (let i=0;i<7;i++) {
+    const d = new Date(sunday);
+    d.setDate(sunday.getDate()+i);
+
+    const button = document.createElement("button");
+    button.className = "day" + (formatDate(d)===key() ? " active" : "");
+
+    const number = document.createElement("b");
+    number.textContent = d.getDate();
+    button.append(number,document.createTextNode(weekNames[d.getDay()]));
+
+    button.onclick = () => {
+      selectedDate = d;
+      render();
+    };
+
+    container.append(button);
+  }
+}
+
+function renderPrayers() {
+  const list = document.getElementById("prayerList");
+  const doneMap = completedPrayers();
+  list.replaceChildren();
+
+  const finished = prayerNames.filter(p => !!doneMap[p.id]).length;
+  document.getElementById("prayerCount").textContent =
+    `${finished}/5 صلوات`;
+
+  prayerNames.forEach(prayer => {
+    const item = document.createElement("label");
+    item.className = "prayer-item" + (doneMap[prayer.id] ? " done" : "");
+
+    const icon = document.createElement("span");
+    icon.className = "prayer-icon";
+    icon.textContent = prayer.icon;
+
+    const name = document.createElement("span");
+    name.className = "prayer-name";
+    name.textContent = prayer.name;
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "check";
+    checkbox.checked = !!doneMap[prayer.id];
+    checkbox.setAttribute("aria-label","صلاة " + prayer.name);
+
+    checkbox.onchange = () => {
+      completedPrayers()[prayer.id] = checkbox.checked;
+      save();
+      renderPrayers();
+      renderMonthlySummary();
+    };
+
+    item.append(icon,name,checkbox);
+    list.append(item);
+  });
+}
+
+function renderMonthlySummary() {
+  const monthInput = document.getElementById("summaryMonth");
+
+  if (!monthInput.value) {
+    monthInput.value = formatDate(new Date()).slice(0,7);
+  }
+
+  const month = monthInput.value;
+  if (!month) return;
+
+  const [year, monthNumber] = month.split("-").map(Number);
+  const daysInMonth = new Date(year, monthNumber, 0).getDate();
+  let total = 0;
+
+  for (let day=1; day<=daysInMonth; day++) {
+    const date = `${month}-${String(day).padStart(2,"0")}`;
+    total += prayerNames.filter(prayer => data.prayers?.[date]?.[prayer.id]).length;
+  }
+
+  document.getElementById("monthlyTotal").innerHTML =
+    `<div style="font-size:26px;font-weight:bold;color:#405348">${total} / ${daysInMonth*5}</div>
+     <div style="font-size:12px;color:#718074;margin-top:4px">إجمالي الصلوات التي تم تسجيلها خلال الشهر</div>`;
+}
+
+function renderTaskList(listId, tasks, type) {
+  const list = document.getElementById(listId);
+  list.replaceChildren();
+
+  if (!tasks.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "لا توجد مهام حتى الآن";
+    list.append(empty);
+  }
+
+  tasks.forEach(task => {
+    const row = document.createElement("div");
+    row.className = "task";
+    row.dataset.id = task.id;
+    row.draggable = true;
+
+    const drag = document.createElement("span");
+    drag.className = "drag";
+    drag.textContent = "⠿";
+    drag.title = "اسحبي لإعادة الترتيب";
+
+    const name = document.createElement("span");
+    name.className = "task-name";
+    name.textContent = task.name;
+
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.gap = "3px";
+
+    const edit = document.createElement("button");
+    edit.className = "action";
+    edit.type = "button";
+    edit.textContent = "✏️";
+    edit.title = "تعديل";
+    edit.onclick = () => {
+      const updated = prompt("تعديل اسم المهمة:",task.name);
+      if (updated && updated.trim()) {
+        task.name = updated.trim();
+        save();
+        render();
+      }
+    };
+
+    const remove = document.createElement("button");
+    remove.className = "action delete";
+    remove.type = "button";
+    remove.textContent = "🗑️";
+    remove.title = "حذف";
+    remove.onclick = () => {
+      if (!confirm("هل تريدين حذف المهمة؟")) return;
+
+      if (type === "fixed") {
+        data.fixed = data.fixed.filter(t => t.id !== task.id);
+      } else {
+        data.extra[key()] = extras().filter(t => t.id !== task.id);
+      }
+
+      save();
+      render();
+    };
+
+    const iconWrap = document.createElement("div");
+    iconWrap.className = "icon-wrap";
+
+    const iconButton = document.createElement("button");
+    iconButton.className = "icon-btn";
+    iconButton.type = "button";
+    iconButton.textContent = task.icon || "📌";
+
+    const menu = document.createElement("div");
+    menu.className = "icon-menu";
+
+    iconChoices.forEach(choice => {
+      const option = document.createElement("button");
+      option.className = "icon-option";
+      option.type = "button";
+      option.textContent = choice;
+      option.onclick = () => {
+        task.icon = choice;
+        save();
+        render();
+      };
+      menu.append(option);
+    });
+
+    iconButton.onclick = () => menu.classList.toggle("open");
+    iconWrap.append(iconButton,menu);
+
+    actions.append(edit,remove);
+    row.append(drag,iconWrap,name,actions);
+
+    if (type === "extra") {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.className = "check";
+      checkbox.checked = !!completed()[task.id];
+      checkbox.onchange = () => {
+        completed()[task.id] = checkbox.checked;
+        save();
+        render();
+      };
+      row.append(checkbox);
+      if (checkbox.checked) row.classList.add("done");
+    }
+
+    list.append(row);
+  });
+
+  enableDrag(list,tasks,type);
+}
+
+function enableDrag(list,tasks,type) {
+  let dragged = null;
+
+  list.querySelectorAll(".task").forEach(row => {
+    row.addEventListener("dragstart",() => {
+      dragged = row.dataset.id;
+      row.classList.add("dragging");
+    });
+
+    row.addEventListener("dragend",() => {
+      row.classList.remove("dragging");
+    });
+
+    row.addEventListener("dragover",e => {
+      e.preventDefault();
+    });
+
+    row.addEventListener("drop",e => {
+      e.preventDefault();
+      const target = row.dataset.id;
+      if (!dragged || dragged === target) return;
+
+      const from = tasks.findIndex(t => t.id === dragged);
+      const to = tasks.findIndex(t => t.id === target);
+      if (from < 0 || to < 0) return;
+
+      const moved = tasks.splice(from,1)[0];
+      tasks.splice(to,0,moved);
+      save();
+      render();
+    });
+  });
+}
+
+function renderCounts() {
+  document.getElementById("fixedCount").textContent =
+    `${data.fixed.length} مهام`;
+
+  const list = extras();
+  const done = list.filter(t => completed()[t.id]).length;
+  document.getElementById("extraCount").textContent =
+    `${done}/${list.length} مكتملة`;
+}
+
+function render() {
+  document.getElementById("selectedDate").value = key();
+  renderDays();
+  renderPrayers();
+  renderMonthlySummary();
+  renderTaskList("fixedList",data.fixed,"fixed");
+  renderTaskList("extraList",extras(),"extra");
+  renderCounts();
+}
+
+document.getElementById("selectedDate").onchange = e => {
+  if (!e.target.value) return;
+  selectedDate = new Date(e.target.value+"T12:00:00");
+  render();
+};
+
+document.getElementById("todayBtn").onclick = () => {
+  selectedDate = new Date();
+  selectedDate.setHours(12,0,0,0);
+  render();
+};
+
+document.getElementById("fixedForm").onsubmit = e => {
+  e.preventDefault();
+  const input = document.getElementById("fixedInput");
+  const name = input.value.trim();
+  if (!name) return;
+
+  data.fixed.push({id:makeId(),name,icon:"📌"});
+  input.value = "";
+  save();
+  render();
+};
+
+document.getElementById("extraForm").onsubmit = e => {
+  e.preventDefault();
+  const input = document.getElementById("extraInput");
+  const name = input.value.trim();
+  if (!name) return;
+
+  extras().push({id:makeId(),name,icon:"⭐"});
+  input.value = "";
+  save();
+  render();
+};
+
+document.getElementById("summaryToggle").onclick = () => {
+  const panel = document.getElementById("summaryPanel");
+  const isOpen = !panel.hidden;
+  panel.hidden = isOpen;
+  document.getElementById("summaryToggle").setAttribute("aria-expanded",String(!isOpen));
+  document.getElementById("summaryArrow").textContent = isOpen ? "＋" : "－";
+};
+
+document.getElementById("summaryMonth").onchange = renderMonthlySummary;
+
+/* المصروفات */
+const EXPENSE_STORAGE_KEY = "dailyPlannerExpenses_v1";
+let expenseData = loadExpenses();
+let selectedExpenseMonth = localMonthKey();
+
+function localMonthKey(){
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+}
+
+function loadExpenses(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(EXPENSE_STORAGE_KEY));
+    if(saved && typeof saved === "object") return saved;
+  }catch(e){}
+  return {months:{}};
+}
+
+function saveExpenses(){
+  localStorage.setItem(EXPENSE_STORAGE_KEY,JSON.stringify(expenseData));
+}
+
+function expenseMonthData(){
+  if(!expenseData.months) expenseData.months = {};
+  if(!expenseData.months[selectedExpenseMonth]){
+    expenseData.months[selectedExpenseMonth] = {
+      monthBudget:0,
+      monthItems:[],
+      periods:[]
+    };
+  }
+  const month = expenseData.months[selectedExpenseMonth];
+  if(!Array.isArray(month.monthItems)) month.monthItems=[];
+  if(!Array.isArray(month.periods)) month.periods=[];
+  return month;
+}
+    const totalValue=expenseTotal(period.items);
+
+    const budget=document.createElement("div");
+    budget.className="budget-box";
+
+    const budgetLabel=document.createElement("label");
+    budgetLabel.textContent="المبلغ المخصص للفترة";
+
+    const budgetInput=document.createElement("input");
+    budgetInput.type="number";
+    budgetInput.min="0";
+    budgetInput.step="0.01";
+    budgetInput.inputMode="decimal";
+    budgetInput.placeholder="حددي الميزانية";
+    budgetInput.value=period.budget||"";
+
+    const remaining=document.createElement("div");
+    remaining.className="budget-remaining";
+
+    const updateRemaining=()=>{
+      remaining.textContent=budgetInput.value===""
+        ? "اكتبي المبلغ المخصص لمتابعة المتبقي"
+        : `المتبقي: ${money((Number(budgetInput.value)||0)-totalValue)}`;
+
+      remaining.style.color=(Number(budgetInput.value)||0)-totalValue<0
+        ? "#c16f6f"
+        : "#557c62";
+    };
+
+    budgetInput.onchange=()=>{
+      const n=budgetInput.value===""?0:Number(budgetInput.value);
+
+      if(!Number.isFinite(n)||n<0){
+        alert("أدخلي مبلغًا صحيحًا");
+        budgetInput.value=period.budget||"";
+        return;
+      }
+
+      period.budget=n;
+      saveExpenses();
+      updateRemaining();
+    };
+
+    budgetLabel.append(budgetInput);
+    budget.append(budgetLabel,remaining);
+    updateRemaining();
+
+    const total=document.createElement("div");
+    total.className="expense-total";
+
+    const totalStrong=document.createElement("strong");
+    totalStrong.textContent=money(totalValue);
+
+    const totalSmall=document.createElement("small");
+    totalSmall.textContent="إجمالي مصروفات هذه الفترة فقط";
+
+    total.append(totalStrong,totalSmall);
+
+    const list=document.createElement("div");
+    list.className="expense-list";
+    renderExpenseItems(period.items,list);
+
+    const form=document.createElement("form");
+    form.className="expense-form";
+
+    const desc=document.createElement("input");
+    desc.placeholder="وصف الحاجة...";
+    desc.maxLength=120;
+    desc.required=true;
+
+    const amount=document.createElement("input");
+    amount.type="number";
+    amount.min="0";
+    amount.step="0.01";
+    amount.inputMode="decimal";
+    amount.placeholder="المبلغ";
+    amount.required=true;
+
+    const add=document.createElement("button");
+    add.type="button";
+    add.textContent="+";
+    add.setAttribute("aria-label","إضافة مصروف للفترة");
+
+    const addItem=()=>{
+      const value=Number(amount.value);
+
+      if(!desc.value.trim()||amount.value===""||!Number.isFinite(value)||value<0){
+        alert("اكتبي وصف المصروف ومبلغه أولًا.");
+        return;
+      }
+
+      period.items.push({
+        id:newExpenseId(),
+        description:desc.value.trim().slice(0,120),
+        amount:value
+      });
+
+      saveExpenses();
+      renderExpenses();
+    };
+
+    add.onclick=addItem;
+    form.onsubmit=e=>{
+      e.preventDefault();
+      addItem();
+    };
+
+    form.append(desc,amount,add);
+    card.append(top,dates,budget,total,list,form);
+    periodsList.append(card);
+  });
+}
+
+document.getElementById("expenseMonth").value=selectedExpenseMonth;
+
+document.getElementById("expenseMonth").onchange=e=>{
+  if(!e.target.value) return;
+  selectedExpenseMonth=e.target.value;
+  renderExpenses();
+};
+
+const monthAddButton=document.querySelector("#monthExpenseForm button[type='submit']");
+
+function addMonthExpense(){
+  const desc=document.getElementById("monthExpenseDescription");
+  const amount=document.getElementById("monthExpenseAmount");
+  const value=Number(amount.value);
+
+  if(!desc.value.trim()||amount.value===""||!Number.isFinite(value)||value<0){
+    alert("اكتبي وصف المصروف ومبلغه أولًا.");
+    return;
+  }
+
+  expenseMonthData().monthItems.push({
+    id:newExpenseId(),
+    description:desc.value.trim().slice(0,120),
+    amount:value
+  });
+
+  saveExpenses();
+  document.getElementById("monthExpenseForm").reset();
+  renderExpenses();
+  desc.focus();
+}
+
+monthAddButton.type="button";
+monthAddButton.onclick=addMonthExpense;
+
+document.getElementById("monthExpenseForm").onsubmit=e=>{
+  e.preventDefault();
+  addMonthExpense();
+};
+
+document.getElementById("addPeriodBtn").onclick=()=>{
+  const start=document.getElementById("newPeriodStart").value;
+  const end=document.getElementById("newPeriodEnd").value;
+
+  if(!start||!end){
+    alert("اختاري تاريخ البداية والنهاية.");
+    return;
+  }
+
+  if(end<start){
+    alert("تاريخ النهاية لازم يكون بعد تاريخ البداية.");
+    return;
+  }
+
+  const month=expenseMonthData();
+
+  month.periods.push({
+    id:newExpenseId(),
+    name:`الفترة ${month.periods.length+1}`,
+    start,
+    end,
+    budget:0,
+    items:[]
+  });
+
+  saveExpenses();
+
+  document.getElementById("newPeriodStart").value="";
+  document.getElementById("newPeriodEnd").value="";
+
+  renderExpenses();
+};
+
+function showAppPage(which){
+  const isExpenses=which==="expenses";
+
+  document.getElementById("routinePage").hidden=isExpenses;
+  document.getElementById("expensesPage").hidden=!isExpenses;
+
+  document.getElementById("routineTab").classList.toggle("active",!isExpenses);
+  document.getElementById("expensesTab").classList.toggle("active",isExpenses);
+
+  if(isExpenses) renderExpenses();
+}
+
+document.getElementById("routineTab").addEventListener(
+  "click",
+  ()=>showAppPage("routine")
+);
+
+document.getElementById("expensesTab").addEventListener(
+  "click",
+  ()=>showAppPage("expenses")
+);
+
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load",() => {
     navigator.serviceWorker.register("./sw.js");
@@ -712,9 +1788,11 @@ render();
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) return;
+
   const changed = rolloverUnfinishedTasksThroughToday();
+
   if (changed && key() === formatDate(new Date())) render();
 });
 </script>
 </body>
-</html> 
+</html>
