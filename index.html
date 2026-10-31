@@ -282,12 +282,11 @@ button {cursor:pointer}
   <div class="app-page expense-page" id="expensesPage" hidden>
     <section class="expense-section month-expense">
       <div class="expense-head">
-        <div class="expense-title">🌿 مصروف الشهر</div>
-        <span class="count">مستقل عن الفترات</span>
+        <div class="expense-title">💵 مصروف الشهر</div>
       </div>
       <input type="month" class="expense-month-picker" id="expenseMonth" aria-label="اختيار شهر المصروفات">
       <div class="budget-box">
-        <label>المبلغ المخصص للشهر
+        <label>💲 المبلغ المخصص للشهر
           <input id="monthBudget" type="number" min="0" step="0.01" inputmode="decimal" placeholder="حددي الميزانية">
         </label>
         <div class="budget-remaining" id="monthRemaining"></div>
@@ -302,8 +301,7 @@ button {cursor:pointer}
     </section>
     <section class="expense-section">
       <div class="expense-head">
-        <div class="expense-title">📅 مصروف الفترات الأسبوعية</div>
-        <span class="count">كل فترة مستقلة</span>
+        <div class="expense-title">💵 مصروف الفترات الأسبوعية</div>
       </div>
       <div id="periodsList" class="expense-page"></div>
       <div class="period-add">
@@ -313,7 +311,6 @@ button {cursor:pointer}
           <label>إلى تاريخ<input type="date" id="newPeriodEnd"></label>
         </div>
         <button type="button" class="period-add-btn" id="addPeriodBtn">إضافة الفترة</button>
-        <div class="expense-hint">حددي بداية ونهاية كل فترة بنفسك، ويمكنك تعديلهما لاحقًا وإضافة أي عدد من الفترات.</div>
       </div>
     </section>
   </div>
