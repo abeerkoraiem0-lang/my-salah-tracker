@@ -950,7 +950,7 @@ function renderExpenses(){
   );
 
   const totalContainer=document.getElementById("monthExpenseTotal");
-  const monthTotalBlock=makeExpenseTotal(monthTotal,"إجمالي مصروفات الشهر في هذا القسم فقط");
+  const monthTotalBlock=makeExpenseTotal(monthTotal,"إجمالي مصروفات الشهر   ");
   totalContainer.replaceChildren(...Array.from(monthTotalBlock.childNodes));
   renderExpenseRows(month.items,document.getElementById("monthExpenseList"));
 
@@ -1039,7 +1039,7 @@ function renderExpenses(){
     const budget=document.createElement("div");
     budget.className="budget-box";
     const budgetLabel=document.createElement("label");
-    budgetLabel.textContent="المبلغ المخصص للفترة";
+    budgetLabel.textContent="💲 المبلغ المخصص للفترة";
     const budgetInput=document.createElement("input");
     budgetInput.type="number";
     budgetInput.min="0";
