@@ -986,8 +986,15 @@ function addExpenseFormItem(form,descriptionInput,amountInput,items,categoryInpu
   renderExpenses();
   return true;
 }
-const MONTH_EXPENSE_CATEGORIES=["منظفات","لحوم","بقالة","مواصلات","أخرى"];
-
+const MONTH_EXPENSE_CATEGORIES=[
+  "منظفات",
+  "لحوم",
+  "بقالة",
+  "مواصلات",
+  "أخرى",
+  "عناية شخصية",
+  "فواتير"
+];
 function renderCategorySummary(items){
   const panel=document.getElementById("categorySummaryPanel");
   const totals=Object.fromEntries(MONTH_EXPENSE_CATEGORIES.map(name=>[name,0]));
