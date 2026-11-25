@@ -1360,11 +1360,13 @@ document.addEventListener("visibilitychange", () => {
 // رسالة عشوائية عند كل فتح للتطبيق، دون تكرار حتى تكتمل دورة الرسائل
 (function initDailyMessagePopup(){
   const messages = [
-    "والذين جهدوا فيتا لنهدينهم سبلنا",
+    "والذين جهدوا فينا لنهدينهم سبلنا",
     "العهد الذي بيننا وبينهم الصلاة",
-    "وليخش الذين لو ترموا من خلفهم ذرية ضعافا خافوا عليهم فليتقوا الله وليقولوا قولا سديدا",
+    "وليخش الذين لو تركوا من خلفهم ذرية ضعافا خافوا عليهم فليتقوا الله وليقولوا قولا سديدا",
     "أول ما يحاسب عليه العبد يوم القيامة الصلاة",
-    "فرصة جديدة ممكن متجيش تاني"
+    "من أدمن قرع الباب يوشك أن يفتح له" 
+  "فخلف من بعدهم خلف أضاعوا الصلاة واتبعوا الشهوات"
+    "رأس الأمر الإسلام وعموده الصلاة"
   ];
   const BAG_KEY = "dailyMessageRandomBag_v1";
   const LAST_KEY = "dailyMessageLastIndex_v1";
@@ -1402,7 +1404,7 @@ document.addEventListener("visibilitychange", () => {
 
   // لا يمكن إغلاق النافذة أو تجاوزها قبل انتهاء الثلاث ثواني
   document.body.style.overflow = "hidden";
-  let remaining = 10;
+  let remaining = 5;
   countEl.textContent = String(remaining);
   startBtn.disabled = true;
 
